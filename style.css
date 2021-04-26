@@ -9,7 +9,7 @@
 html, body{ 
     background-color:darkgrey;}
 
-.logo {
+.dart {
     width: 200px;
     height: 200px;
     content: url(dart_board.jpg);}
@@ -49,7 +49,7 @@ html, body{
     height: 50px;
     border: none;
     color: white;
-    background-color: green;
+    background-color:tan;
     border-radius: 4px;
     box-shadow: inset 0 0 0 0 #F9E506;
     transition:ease-out 0.3s;
@@ -65,7 +65,7 @@ html, body{
     height: 50px;
     border: none;
     color: white;
-    background-color: green;
+    background-color: tan;
     border-radius: 4px;
     box-shadow: inset 0 0 0 0 #F9E506;
     transition:ease-out 0.3s;
@@ -81,7 +81,7 @@ html, body{
     height: 50px;
     border: none;
     color: white;
-    background-color: green;
+    background-color: tan;
     border-radius: 4px;
     box-shadow: inset 0 0 0 0 #F9E506;
     transition:ease-out 0.3s;
@@ -97,7 +97,7 @@ html, body{
     height: 50px;
     border: none;
     color: white;
-    background-color: green;
+    background-color: tan;
     border-radius: 4px;
     box-shadow: inset 0 0 0 0 #F9E506;
     transition:ease-out 0.3s;
@@ -113,7 +113,7 @@ html, body{
     height: 50px;
     border: none;
     color: white;
-    background-color: green;
+    background-color: tan;
     border-radius: 4px;
     box-shadow: inset 0 0 0 0 #F9E506;
     transition:ease-out 0.3s;
@@ -129,7 +129,7 @@ html, body{
     height: 50px;
     border: none;
     color: white;
-    background-color: green;
+    background-color: tan;
     border-radius: 4px;
     box-shadow: inset 0 0 0 0 #F9E506;
     transition:ease-out 0.3s;
@@ -139,3 +139,27 @@ html, body{
     box-shadow: inset 100px 0 0 0 #F9E506;
     cursor: pointer;
     color: black;}
+
+.game{
+    color:maroon;
+    font-size: 20px;
+    display:block;
+    text-align: left;
+    position: relative;
+    top: 40px;
+    flex-direction: column;
+}
+
+.cricketboard{
+    width: 200px;
+    height: 250px;
+    content: url(cricketb.jpg);
+}
+
+.gameHeader{
+    height: 120px;
+    vertical-align: middle;
+    text-align: justify; 
+    position: relative;
+    top: 120px;
+}
