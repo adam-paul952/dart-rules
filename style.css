@@ -9,17 +9,21 @@
 html, body{ 
     background-color:darkgrey;}
 
+/*
+    Style for the Index starts here
+*/
 .dart {
     width: 200px;
     height: 200px;
     content: url(dart_board.jpg);}
 
-.logoHeader {
+.dartHeader {
     height: 120px;
     vertical-align: middle;
     text-align: center; 
     position: relative;
-    top: 80px;}
+    top: 80px;
+    font-family: ;}
 
 .floatLeft { float: left;
     margin-left: 30px;}
@@ -36,15 +40,22 @@ html, body{
     top: 80px;
     flex-direction: row;}
 
-    .container {
-    display:flex;
+/*
+    Style for the Index Ends Here
+    Style for the Buttons start here
+*/
+.container {
+    height: 100px;
+    width: 100%;
+    display: flex;
     flex-direction:row;
     justify-content:space-evenly;
     align-items: center;
     text-align: center;
-    min-height: 50vh;}
+    min-height: 50vh;
+    }
 
-.btn-1{
+.btn{
     width: 100px;
     height: 50px;
     border: none;
@@ -55,12 +66,12 @@ html, body{
     transition:ease-out 0.3s;
     outline: none;}
 
-.btn-1:hover{
+.btn:hover{
     box-shadow: inset 100px 0 0 0 #F9E506;
     cursor: pointer;
     color: black;}
 
-.btn-2{
+/* .btn-2{
     width: 100px;
     height: 50px;
     border: none;
@@ -140,6 +151,10 @@ html, body{
     cursor: pointer;
     color: black;}
 
+/*
+    Style for Buttons End here
+    Style for Additional pages starts here
+*/
 .game{
     color:maroon;
     font-size: 20px;
@@ -162,4 +177,4 @@ html, body{
     text-align: justify; 
     position: relative;
     top: 120px;
-}
+} */
