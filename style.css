@@ -1,3 +1,11 @@
+.userContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+/*--------------------------------------------------------------------------*/
 /*
     Author: Adam Paul
     This is the to be the CSS format for my webpage.
@@ -12,25 +20,6 @@ html, body{
 /*
     Style for the Index starts here
 */
-.dart {
-    width: 200px;
-    height: 200px;
-    content: url(./pictures/dart_board.jpg);}
-
-.dartHeader {
-    height: 120px;
-    vertical-align: middle;
-    text-align: center;
-    position: relative;
-    top: 80px;
-}
-
-.floatLeft { float: left;
-    margin-left: 30px;}
-
-.floatRight {
-    float: right;
-    margin-right: 30px;}
 
 .txt {color:maroon;
     font-size: 20px;
@@ -44,14 +33,12 @@ html, body{
     Style for the Index Ends Here
     Style for the Buttons start here
 */
-.container {
-    height: 100px;
-    width: 100%;
+#container {
+    padding: 10px;
     display: flex;
     flex-direction:row;
     justify-content:space-evenly;
     align-items: center;
-    text-align: center;
     min-height: 50vh;
     }
 
@@ -153,28 +140,3 @@ html, body{
 
 /*
     Style for Buttons End here
-    Style for Additional pages starts here
-*/
-.game{
-    color:maroon;
-    font-size: 20px;
-    display:block;
-    text-align: left;
-    position: relative;
-    top: 40px;
-    flex-direction: column;
-}
-
-.cricketboard{
-    width: 200px;
-    height: 250px;
-    content: url(cricketb.jpg);
-}
-
-.gameHeader{
-    height: 120px;
-    vertical-align: middle;
-    text-align: justify;
-    position: relative;
-    top: 120px;
-}

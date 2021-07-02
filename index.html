@@ -1,31 +1,27 @@
-<!-- Author: Adam Paul
-    This is the a webpage explaining the rules to different dart games.
--->
-
 <!DOCTYPE html>
 <html lang='en'>
     <head>
         <title>Dart Rules</title>
         <link rel='stylesheet' href='style.css'>
+        <script src="darts.js"></script>
         <meta charset='UTF-8'>
+        <meta name="description" content="Scoreboard start page">
+        <meta name="author" content="Adam Paul">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body>
-        <img class='dart floatLeft' alt='Dart Board'>
-        <img class='dart floatRight' alt='Dart Board' >
-        <h1 class ='dartHeader'><b>Welcome!</b></h1>
+    <body onload="generateSelectionPage()">
+        <h1><b>Welcome!</b></h1>
         <div class='txt'>
-            <p><a href="./main.html">Main Scoreboard</a></p>
-            <br>
-            <p><u><b>Please select below from the list to see the rules:</b></u></p>
+            <p><u><b>Please select an option from the list:</b></u></p>
         </div>
-        <div class="container">
-            <button class="btn"><a href='./rules/x01.html'> X01</a></button>
-            <button class="btn"><a href='./rules/cricket.html'>Cricket</a></button>
-            <button class="btn"><a href='./rules/baseball.html'>Baseball</a></button>
-            <button class="btn"><a href='./rules/killer.html'>Killer</a></button>
-            <button class="btn"><a href='./rules/bobs27.html'>Bobs 27</a></button>
-            <button class="btn"><a href='./rules/elimination.html'>Elimination</a></button>
+      <form>
+        <div id="container" class="container">
+            <div id="newGame"></div>
+            <div id="resumeGame"></div>
+            <div id="createPlayer"></div>
+            <div id="statistics"></div>
+            <div id="rules"></div>
         </div>
+      </form>
     </body>
 </html>
-<script src='darts.js'></script>
