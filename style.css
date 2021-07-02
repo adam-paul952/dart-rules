@@ -1,4 +1,4 @@
-/* 
+/*
     Author: Adam Paul
     This is the to be the CSS format for my webpage.
 */
@@ -6,7 +6,7 @@
 *{font-family: 'Courier New', Courier, monospace;
 }
 
-html, body{ 
+html, body{
     background-color:darkgrey;}
 
 /*
@@ -15,20 +15,20 @@ html, body{
 .dart {
     width: 200px;
     height: 200px;
-    content: url(dart_board.jpg);}
+    content: url(./pictures/dart_board.jpg);}
 
 .dartHeader {
     height: 120px;
     vertical-align: middle;
-    text-align: center; 
+    text-align: center;
     position: relative;
     top: 80px;
-    font-family: ;}
+}
 
 .floatLeft { float: left;
     margin-left: 30px;}
 
-.floatRight { 
+.floatRight {
     float: right;
     margin-right: 30px;}
 
@@ -174,7 +174,7 @@ html, body{
 .gameHeader{
     height: 120px;
     vertical-align: middle;
-    text-align: justify; 
+    text-align: justify;
     position: relative;
     top: 120px;
-} */
+}
