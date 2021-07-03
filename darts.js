@@ -22,7 +22,7 @@ const generateSelectionPage = () => {
         newGameBtn.setAttribute("type", "button");
         newGameBtn.setAttribute("value", "Create New Game");
         newGameBtn.addEventListener("click", () => {
-            // Function to load Game selection page
+            window.location.assign("./gameSelect.html");
         });
     // Create Resume Game
     let resumeGameBtn = document.getElementById("resumeGame");

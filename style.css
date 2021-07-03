@@ -1,8 +1,22 @@
-.userContainer {
-    display: flex;
-    flex-direction: row;
+#listOfUsers, td {
+    border: 1px solid black;
+    width: 30%;
+    border-collapse: collapse;
+    border-spacing: 20px;
+}
+th {
+    padding: 10px;
 }
 
+/* #x01Option {
+    border: 1px solid black;
+    width: 100%;
+    border-collapse: collapse;
+
+}
+td {
+    padding: 10px;
+} */
 
 
 /*--------------------------------------------------------------------------*/
