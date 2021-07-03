@@ -1,0 +1,23 @@
+{
+  "name": "dart-rules",
+  "version": "1.0.0",
+  "description": "A dart Scoreboard",
+  "main": "startServer.js",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adam-paul952/dart-rules.git"
+  },
+  "author": "Adam Paul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adam-paul952/dart-rules/issues"
+  },
+  "homepage": "https://github.com/adam-paul952/dart-rules#readme"
+}
