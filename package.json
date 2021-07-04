@@ -4,7 +4,7 @@
   "description": "A dart Scoreboard",
   "main": "startServer.js",
   "dependencies": {
-    "mysql": "^2.18.1"
+    "mysql2": "^2.2.5"
   },
   "devDependencies": {},
   "scripts": {
