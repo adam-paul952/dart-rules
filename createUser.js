@@ -7,10 +7,12 @@ const generateNameField = () => {
         userName = document.createElement("input");
         userName.setAttribute("type", "text");
         userName.setAttribute("placeholder", "Name");
-    // let nickName = document.getElementById("nicknameInput");
-    //     nickName = document.createElement("input");
-    //     nickName.setAttribute("type", "text");
-    //     nickName.setAttribute("placeholder", "Nickname(Optional)");
+        userName.setAttribute("id", "userName");
+        let nickName = document.getElementById("nicknameInput");
+        nickName = document.createElement("input");
+        nickName.setAttribute("type", "text");
+        nickName.setAttribute("placeholder", "Nickname(Optional)");
+        nickName.setAttribute("id", "nickName");
 
     // Create Submit and Cancel Buttons
     let submitBtn = document.getElementById("submitBtn");
@@ -20,10 +22,9 @@ const generateNameField = () => {
         submitBtn.addEventListener("click", () => {
             // debugger;
             let uName = userName.value;
-            // let nName = document.getElementById("nicknameInput").value;
-            console.log(`The new player ${uName} has been read`);
-            createNewPlayer(uName);
-            uName.reset()
+            let nName = nickName.value;
+            console.log(`The new player ${uName} has a nickname of ${nName}`);
+            // createNewPlayer(uName, nName);
         });
     let resetBtn = document.getElementById("resetBtn");
         resetBtn = document.createElement("input");
@@ -38,20 +39,22 @@ const generateNameField = () => {
         });
 
         nameField.appendChild(userName);
-        // nameField.appendChild(nickName);
+        nameField.appendChild(nickName);
         nameField.appendChild(submitBtn);
         nameField.appendChild(resetBtn);
         nameField.appendChild(returnBtn);
 }
 
-const createNewPlayer = (name) => {
-    let addNewPlayer = document.getElementById("tbody");
-    let newPlayer = document.createElement("tr");
-    let newName = document.createTextNode(name);
+// const createNewPlayer = (name, nickname) => {
+//     let addNewPlayer = document.getElementById("tbody");
+//     let newPlayer = document.createElement("tr");
+//     let newName = document.createTextNode(name);
+//     let newNickname = document.createTextNode(nickname);
 
-    newPlayer.appendChild(newName);
-    addNewPlayer.appendChild(newPlayer);
-}
+//     newPlayer.appendChild(newName);
+//     newPlayer.appendChild(newNickname);
+//     addNewPlayer.appendChild(newPlayer);
+// }
 
 // // Function to get user input and store into a variable
 // const listOfPlayers = function(name, nickname) {

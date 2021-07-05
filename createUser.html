@@ -10,7 +10,7 @@
       <script src="createUser.js"></script>
   </head>
   <body onload="generateNameField()">
-    <form>
+    <form action="/users/create" method="POST">
       <div id="userContainer"></div>
         <div id="userNameInput"></div>
         <div id="nicknameInput"></div>
@@ -19,15 +19,5 @@
         <div id="resetBtn"></div>
         <div id="returnBtn"></div>
     </form>
-    <br>
-    <div id="listOfUsers">
-      <table>
-        <tbody id="tbody">
-          <tr>
-              <th>Name:</th>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </body>
 </html>
