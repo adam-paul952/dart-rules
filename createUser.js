@@ -17,7 +17,7 @@ const generateNameField = () => {
     // Create Submit and Cancel Buttons
     let submitBtn = document.getElementById("submitBtn");
         submitBtn = document.createElement("input");
-        submitBtn.setAttribute("type", "button");
+        submitBtn.setAttribute("type", "submit");
         submitBtn.setAttribute("value", "Submit");
         submitBtn.addEventListener("click", () => {
             // debugger;
@@ -44,6 +44,8 @@ const generateNameField = () => {
         nameField.appendChild(resetBtn);
         nameField.appendChild(returnBtn);
 }
+const createPlayer = require("./users");
+app.use("./createUser", createPlayer);
 
 // const createNewPlayer = (name, nickname) => {
 //     let addNewPlayer = document.getElementById("tbody");
