@@ -44,8 +44,6 @@ const generateNameField = () => {
         nameField.appendChild(resetBtn);
         nameField.appendChild(returnBtn);
 }
-const createPlayer = require("./users");
-app.use("./createUser", createPlayer);
 
 // const createNewPlayer = (name, nickname) => {
 //     let addNewPlayer = document.getElementById("tbody");
