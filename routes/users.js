@@ -1,9 +1,10 @@
 const express = require('express');
+const app = express();
 const router = express.Router();
-const db = require('../database');
+const db = require('../startServer');
 
-router.get('/createUser', function(req, res, next) {
-res.send('createUser');
+router.get('/users/create', function(req, res, next) {
+res.send('users');
 });
 router.post('/create', function(req, res, next) {
 

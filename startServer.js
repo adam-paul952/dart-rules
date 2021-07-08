@@ -13,6 +13,8 @@ con.connect(function(err) {
   console.log("Server Connected!");
 });
 
+con.end();
+
 module.exports = con;
 
 // // Create new Database
