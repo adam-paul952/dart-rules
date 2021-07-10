@@ -2,7 +2,7 @@
   "name": "dart-rules",
   "version": "1.0.0",
   "description": "A dart Scoreboard",
-  "main": "app.js",
+  "main": "database.js",
   "dependencies": {
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
