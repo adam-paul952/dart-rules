@@ -2,11 +2,20 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const db = require('../startServer');
+// const port = 3000;
 
-router.get('/users/create', function(req, res, next) {
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
+
+// app.listen(port, () => {
+//   console.log(`Example app listening at http://localhost:${port}`)
+// })
+
+app.get('/users/create', function(req, res, next) {
 res.send('users');
 });
-router.post('/create', function(req, res, next) {
+app.post('/create', function(req, res, next) {
 
     // store all the user input data
     const userName = req.body;
@@ -15,9 +24,14 @@ router.post('/create', function(req, res, next) {
     const sql = 'INSERT INTO players SET ?';
     db.query(sql, userName,function (err, data) {
         if (err) throw err;
-        console.log("User name is inserted successfully ");
+        console.log("Player name is inserted successfully ");
     });
  res.redirect('/createUser');  // redirect to user form page after inserting the data
 });
 
-module.exports = router;
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
+
+// module.exports = router;
+// module.exports = app;

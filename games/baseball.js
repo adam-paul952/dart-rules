@@ -3,7 +3,6 @@ const prompt = require('prompt-sync')();
 // Ask user for number of players
 function getNumOfPlayers() {
     const baseball = [];
-    playerCounter = 0;
     let numberOfPlayers = prompt("How many players would you like to play with today? : ");
     if (numberOfPlayers) {
         for (let i = 1; i <= numberOfPlayers; i++) {
