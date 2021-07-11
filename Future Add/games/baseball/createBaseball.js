@@ -1,23 +1,24 @@
-    // Create Numeric Input For Score
-const numberBoard = () =>{
-    let scoreInput = document.getElementById("numberBoard");
-    let inputTable = document.createElement("table");
-    let inputTbody = document.createElement("tbody");
-    let numberCounter = 0;
-    for (let i = 0; i < 3; i++) {
-        let row = document.createElement("tr");
-        for (let j = 0; j < 3; j++) {
-            let col = document.createElement("td");
-            let numberInput = document.createElement("button");
-            // numberInput.setAttribute("value", "")
-            col.appendChild(numberInput);
-            row.appendChild(col);
-        }
-        inputTbody.appendChild(row);
-    }
-    inputTable.appendChild(inputTbody);
-    scoreInput.appendChild(inputTable);
-}
+//     // Create Numeric Input For Score
+// const numberBoard = () =>{
+//     let scoreInput = document.getElementById("numberBoard");
+//     let inputTable = document.createElement("table");
+//     let inputTbody = document.createElement("tbody");
+//     let numberCounter = 0;
+//     for (let i = 0; i < 3; i++) {
+//         let row = document.createElement("tr");
+//         for (let j = 0; j < 3; j++) {
+//             let col = document.createElement("td");
+//             let numberInput = document.createElement("button");
+//             numberInput.setAttribute("class", "btns");
+//             numberCounter++;
+//             col.appendChild(numberInput);
+//             row.appendChild(col);
+//         }
+//         inputTbody.appendChild(row);
+//     }
+//     inputTable.appendChild(inputTbody);
+//     scoreInput.appendChild(inputTable);
+// }
 
     // Create submit score button
 const createSubmit = () => {

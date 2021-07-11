@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Baseball Scoreboard</title>
+    <link rel='stylesheet' href='baseballStylesheet.css'>
+    <script src="createBaseball.js"></script>
+    <meta charset='UTF-8'>
+    <meta name="description" content="Baseball Scoreboard">
+    <meta name="author" content="Adam Paul">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body onload="createSubmit(); createDelete()">
+    <div class="baseballHdr">
+      <h2>Baseball</h2>
+    </div>
+    <div>
+      <div id="inning">
+        <table class="inning">
+            <th>Inning:</th><th></th><th>1</th>
+        </table>
+      </div>
+        <br>
+      <div id="scoreboard">
+          <br>
+        <form>
+          <div id="numberBoard">
+            <table>
+              <tbody>
+                <tr>
+                  <td><input type="button" value="1"></td><td><input type="button" value="2"></td><td><input type="button" value="3"></td>
+                </tr>
+                <tr>
+                  <td><input type="button" value="4"></td><td><input type="button" value="5"></td><td><input type="button" value="6"></td>
+                </tr>
+                <tr>
+                  <td><input type="button" value="7"></td><td><input type="button" value="8"></td><td><input type="button" value="9"></td>
+                </tr>
+                <tr>
+                  <td></td><td><input type="button" value="0"></td><td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="btns">
+            <div id="submitScore"></div>
+            <div id="deleteBtn"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
