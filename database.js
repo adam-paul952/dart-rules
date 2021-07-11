@@ -20,20 +20,20 @@ const listener = app.listen(process.env.PORT || 3000, () => {
   console.log(`Server listening on port ${listener.address().port}`)
 });
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/createUser.html'));
-});
+// app.get('/', function(req, res) {
+//   res.send('Hello World');
+// });
 
-// app.get('/allPlayers', (req, res) => {
-//   const sql = `SELECT * FROM ${process.env.DB}.players;`;
-//   db.query(sql, (err, result) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.send(result);
-//     }
-//   })
-// })
+app.get('/', (req, res) => {
+  const sql = `SELECT * FROM ${process.env.DB}.players;`;
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  })
+})
 
 // app.post('/allPlayers', (req, res) => {
 //   res.json(req.body);

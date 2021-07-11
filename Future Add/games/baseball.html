@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <title>Baseball Scoreboard</title>
+        <link rel='stylesheet' href='baseballStylesheet.css'>
+        <script src="createBaseball.js"></script>
+        <meta charset='UTF-8'>
+        <meta name="description" content="Baseball Scoreboard">
+        <meta name="author" content="Adam Paul">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onload="numberBoard(); createSubmit(); createDelete()">
+        <div class="baseballHdr">
+        <h2>Baseball</h2>
+        </div>
+        <div>
+            <div id="inning"></div>
+                <br>
+            <div id="scoreboard">
+                <form>
+                    <div id="numberBoard"></div>
+                    <div id="submitScore"></div>
+                    <div id="deleteBtn"></div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
