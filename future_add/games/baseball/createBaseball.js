@@ -22,30 +22,32 @@
 
     // Create submit score button
 const createSubmit = () => {
+    let container = document.getElementById("btns");
     let submitScore = document.getElementById("submitScore");
     submitScore = document.createElement("input");
     submitScore.setAttribute("type", "button");
     submitScore.setAttribute("name", "submit");
     submitScore.setAttribute("id", "submit");
     submitScore.setAttribute("value", "Add Score");
-    let scoreboard = document.getElementById("scoreboard");
+    // let scoreboard = document.getElementById("scoreboard");
     // submitScore.addEventListener("click", () => {
         //     // Submit Score
         // })
-        scoreboard.appendChild(submitScore);
+        container.appendChild(submitScore);
     }
 
     // Create delete score button
 const createDelete = () => {
+    let container = document.getElementById("btns");
     let deleteBtn = document.getElementById("deleteBtn");
     deleteBtn = document.createElement("input");
     deleteBtn.setAttribute("type", "button");
     deleteBtn.setAttribute("name", "delete");
     deleteBtn.setAttribute("id", "delete");
     deleteBtn.setAttribute("value", "Clear Score");
-    let scoreboard = document.getElementById("scoreboard");
+    // let scoreboard = document.getElementById("scoreboard");
     // deleteBtn.addEventListener("click", () => {
     //     // Clear Score Input Field
     // })
-    scoreboard.appendChild(deleteBtn);
+    container.appendChild(deleteBtn);
 }
