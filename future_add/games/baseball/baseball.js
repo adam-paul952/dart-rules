@@ -9,7 +9,16 @@ function getNumOfPlayers() {
             const player = {
                 playerName : "Player " + i,
                 score: 0,
-                inning: 1
+                inning: 1,
+                get score() {
+                    return this.score;
+                },
+                set score(score) {
+                    this.score = score;
+                },
+                incrementInning() {
+                    this.inning ++;
+                }
             };
             baseball.push(player);
         }
@@ -18,8 +27,15 @@ function getNumOfPlayers() {
 
 // Create a board of arrays with number of players to hold and compute scores
 const createGame = () => {
-    let players = getNumOfPlayers();
-    // let inning = 1;
+    let game = getNumOfPlayers();
+    let numOfPlayers = getNumOfPlayers().length;
+    let inning = 1;
+    for (let i = 1; i <= numOfPlayers; i ++) {
+        console.log(`Player ${i} it's your turn`);
+        let currentScore = prompt(`Your score was? : `);
+        currentScore += game.score;
+        console.log(`CurrentScore is: ${currentScore}`)
+    }
     // for (let i = 1; i <= 9; i++) {
     //     console.log(inning);
     //     inning++;
@@ -29,7 +45,8 @@ const createGame = () => {
             // game.push(score);
         // }
     // }
-    console.log(players);
+    // console.log(numOfPlayers);
+    console.log(game);
 }
 
 createGame();
@@ -44,4 +61,8 @@ createGame();
 /*
  * Score input has to be a calculator style input that updates scores respectively
  * Loop through innings and players, updating score, until a winner is declared
+*/
+
+/* Create class method to increment inning, method to set score
+ * Loop through players until game over
 */
