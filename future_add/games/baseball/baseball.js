@@ -29,13 +29,14 @@ function getNumOfPlayers() {
 const createGame = () => {
     let game = getNumOfPlayers();
     let numOfPlayers = getNumOfPlayers().length;
-    let inning = 1;
-    for (let i = 1; i <= numOfPlayers; i ++) {
-        console.log(`Player ${i} it's your turn`);
-        let currentScore = prompt(`Your score was? : `);
-        currentScore += game.score;
-        console.log(`CurrentScore is: ${currentScore}`)
-    }
+    let propertyValue = game.hasOwnProperty(score);
+    // let inning = 1;
+    // for (let i = 1; i <= numOfPlayers; i ++) {
+    //     console.log(`Player ${i} it's your turn`);
+    //     let currentScore = prompt(`Your score was? : `);
+    //     currentScore += player.score;
+    //     console.log(`CurrentScore is: ${currentScore}`)
+    // }
     // for (let i = 1; i <= 9; i++) {
     //     console.log(inning);
     //     inning++;
@@ -46,7 +47,7 @@ const createGame = () => {
         // }
     // }
     // console.log(numOfPlayers);
-    console.log(game);
+    console.log(`This has a property of score: ${propertyValue}`);
 }
 
 createGame();
