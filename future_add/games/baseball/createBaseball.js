@@ -1,3 +1,13 @@
+import React from 'react';
+import ReactDom from 'react-dom';
+
+export class Inning extends React.Component {
+    render() {
+        return <h1>Hello World</h1>
+    }
+};
+ReactDom.render(<Inning />, document.getElementById("inning"));
+//----------------------------------------------------------------------------------------------//
 //     // Create Numeric Input For Score
 // const numberBoard = () =>{
 //     let scoreInput = document.getElementById("numberBoard");
