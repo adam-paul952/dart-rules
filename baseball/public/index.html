@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title>Baseball Scoreboard</title>
+    <link rel='stylesheet' href='baseballStylesheet.css'>
+    <script type="module" src="createBaseball.js"></script>
+    <meta charset='UTF-8'>
+    <meta name="description" content="Baseball Scoreboard">
+    <meta name="author" content="Adam Paul">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div class="baseballHdr">
+      <h2>Baseball</h2>
+    </div>
+    <div>
+      <div id="inning">
+      </div>
+        <br>
+        <div id="scoreboard">
+          <table class="scoreboard">
+            <tbody>
+              <tr>
+                <th>Player</th>
+                <th>Current Score</th>
+                <th>Overall Score</th>
+              </tr>
+              <tr>
+                <td>1</td><td></td><td></td>
+              </tr>
+              <tr>
+                <td>2</td><td></td><td></td>
+              </tr>
+              <tr>
+                <td>3</td><td></td><td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <br>
+        <form>
+          <div id="numberBoard">
+            <table class="numInput">
+              <tbody>
+                <tr>
+                  <td><input type="button" value="1"></td><td><input type="button" value="2"></td><td><input type="button" value="3"></td>
+                </tr>
+                <tr>
+                  <td><input type="button" value="4"></td><td><input type="button" value="5"></td><td><input type="button" value="6"></td>
+                </tr>
+                <tr>
+                  <td><input type="button" value="7"></td><td><input type="button" value="8"></td><td><input type="button" value="9"></td>
+                </tr>
+                <tr>
+                  <td><input type="button" value="Add Score"></td><td><input type="button" value="0"></td><td><input type="button" value="Clear"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="btns">
+            <div id="submitScore"></div>
+            <div id="deleteBtn"></div>
+          </div>
+        </form>
+    </div>
+  </body>
+</html>
