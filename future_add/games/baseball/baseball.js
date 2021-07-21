@@ -10,15 +10,15 @@ function getNumOfPlayers() {
                 playerName : "Player " + i,
                 score: 0,
                 inning: 1,
-                get score() {
-                    return this.score;
-                },
-                set score(score) {
-                    this.score = score;
-                },
-                incrementInning() {
-                    this.inning ++;
-                }
+                // get score() {
+                //     return this.score;
+                // },
+                // set score(score) {
+                //     this.score = score;
+                // },
+                // incrementInning() {
+                //     this.inning ++;
+                // }
             };
             baseball.push(player);
         }
@@ -28,28 +28,22 @@ function getNumOfPlayers() {
 // Create a board of arrays with number of players to hold and compute scores
 const createGame = () => {
     let game = getNumOfPlayers();
-    let numOfPlayers = getNumOfPlayers().length;
-    let propertyValue = game.hasOwnProperty(score);
-    // let inning = 1;
-    // for (let i = 1; i <= numOfPlayers; i ++) {
-    //     console.log(`Player ${i} it's your turn`);
-    //     let currentScore = prompt(`Your score was? : `);
-    //     currentScore += player.score;
-    //     console.log(`CurrentScore is: ${currentScore}`)
-    // }
-    // for (let i = 1; i <= 9; i++) {
-    //     console.log(inning);
-    //     inning++;
-    //     for (let j = 1; j <= game.length; j++) {
-    //         console.log(`Player ${i}'s Turn:`);
-    //         let score = prompt("Your score was? : ")
-            // game.push(score);
-        // }
-    // }
-    // console.log(numOfPlayers);
-    console.log(`This has a property of score: ${propertyValue}`);
+    let numOfPlayers = game.length;
+    // let propertyValue = game.hasOwnProperty('playerName');
+    for (let inning = 1; inning <= 9; inning++){
+        // let inning = 1;
+        for (let i = 1; i <= numOfPlayers; i++){
+            console.log(`Inning: ${inning}`);
+            console.log('');
+            console.log(`Player ${i}'s turn....`);
+            let currentScore = prompt(`Score: is `);
+            console.log(`Current Score: ${currentScore}`);
+            console.log('');
+        }
+    }
 }
 
+// getNumOfPlayers();
 createGame();
 
 /*
