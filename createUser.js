@@ -8,11 +8,14 @@ const generateNameField = () => {
         userName.setAttribute("type", "text");
         userName.setAttribute("placeholder", "Name");
         userName.setAttribute("id", "userName");
+        userName.setAttribute("name", "userName");
+        userName.required = true;
         let nickName = document.getElementById("nicknameInput");
         nickName = document.createElement("input");
         nickName.setAttribute("type", "text");
         nickName.setAttribute("placeholder", "Nickname(Optional)");
         nickName.setAttribute("id", "nickName");
+        nickName.setAttribute("name", "nickName");
 
     // Create Submit and Cancel Buttons
     let submitBtn = document.getElementById("submitBtn");
@@ -23,7 +26,7 @@ const generateNameField = () => {
             // debugger;
             let uName = userName.value;
             let nName = nickName.value;
-            console.log(`The new player ${uName} has a nickname of ${nName}`);
+            // console.log(`The new player ${uName} has a nickname of ${nName}`);
             // createNewPlayer(uName, nName);
         });
     let resetBtn = document.getElementById("resetBtn");
@@ -44,36 +47,3 @@ const generateNameField = () => {
         nameField.appendChild(resetBtn);
         nameField.appendChild(returnBtn);
 }
-
-// const createNewPlayer = (name, nickname) => {
-//     let addNewPlayer = document.getElementById("tbody");
-//     let newPlayer = document.createElement("tr");
-//     let newName = document.createTextNode(name);
-//     let newNickname = document.createTextNode(nickname);
-
-//     newPlayer.appendChild(newName);
-//     newPlayer.appendChild(newNickname);
-//     addNewPlayer.appendChild(newPlayer);
-// }
-
-// // Function to get user input and store into a variable
-// const listOfPlayers = function(name, nickname) {
-//     // let players = [];
-//     let player = new UserName(name, nickname);
-//     // players.push(player);
-//     console.log(player);
-// }
-
-// // Create class to construct user profile
-// class UserName {
-//     constructor(uName, nickname) {
-//         this._uName = uName;
-//         this._nickname = nickname;
-//     }
-//     get name() {
-//         return this._uName;
-//     }
-//     get nickname() {
-//         return this._nickname;
-//     }
-// }
