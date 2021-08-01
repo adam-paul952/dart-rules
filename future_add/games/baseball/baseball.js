@@ -7,7 +7,7 @@ function getNumOfPlayers() {
     if (numberOfPlayers) {
         for (let i = 1; i <= numberOfPlayers; i++) {
             const player = {
-                playerName : "Player " + i,
+                playerName: "Player " + i,
                 score: 0,
                 inning: 1,
                 // get score() {
