@@ -1,45 +1,52 @@
-const express = require('express');
-const database = require('../database');
+import { Router } from "express";
+import { query, execute } from "../database";
 
-const router = express.Router();
+const router = Router();
 
 router
-    .get('/', async (req, res) => {
-        const users = await database.query(`
+  .get("/", async (req, res) => {
+    const users = await query(`
         SELECT
             *
         FROM
             players
     `);
 
-        res.contentType('html');
+    res.contentType("html");
 
-        res.end(`
-        ${users.map((user) => {
-            return `<p>${user.user_name} AKA ${user.nick_name}</p>`;
-        }).join('')}
+    res.end(`
+    ${users
+      .map((user) => {
+        return `<p>${user.user_name} AKA ${user.nick_name}</p>`;
+      })
+      .join("")}
     `);
-    })
+  })
 
-    .post('/', async (req, res) => {
-        const body = req.body;
+  .post("/", async (req, res) => {
+    const body = req.body;
 
-        await database.execute(`
+    await execute(
+      `
         INSERT INTO players (
             user_name,
             nick_name,
+            password,
             date_added
         ) VALUES (
             @firstName,
             @nickName,
+            password,
             NOW()
         )
-    `, {
-            firstName: body.first,
-            nickName: body.nickName
-        });
+    `,
+      {
+        firstName: body.first,
+        nickName: body.nickName,
+      }
+    );
 
-        res.end('Added player');
-    });
+    res.end("Added player");
+  });
 
-module.exports = router;
+export default router;
