@@ -1,9 +1,10 @@
 {
   "name": "dart-rules",
   "version": "1.0.0",
-  "description": "A dart Scoreboard",
-  "main": "database.js",
+  "description": "Node.js, Express, MySQL for dart-scoreboard",
+  "main": "server.js",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
