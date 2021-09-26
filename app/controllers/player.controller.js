@@ -1,11 +1,11 @@
-const Player = require("../models/player.model.js");
+const Player = require("../models/player.model");
 
 // Create and save new player
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: `Content can not be empty!`,
     });
   }
   // Create Player
@@ -16,7 +16,7 @@ exports.create = (req, res) => {
   Player.create(player, (err, data) => {
     if (err) {
       res.status(500).send({
-        message: err.message || "Error occured while creating the player",
+        message: err.message || `Error occured while creating the player`,
       });
     } else {
       res.send(data);
@@ -29,7 +29,7 @@ exports.findAll = (req, res) => {
   Player.getAll((err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "Unwanted error message.",
+        message: err.message || `Unwanted error message.`,
       });
     else res.send(data);
   });
@@ -39,7 +39,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   Player.findById(req.params.playerId, (err, data) => {
     if (err) {
-      if (err.kind === "not_found") {
+      if (err.kind === `not_found`) {
         res.status(404).send({
           message: `No found player with id ${req.params.playerId}.`,
         });
@@ -83,7 +83,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
   Player.remove(req.params.playerId, (err, data) => {
     if (err) {
-      if (err.kind === "not_found") {
+      if (err.kind === `not_found`) {
         res.status(404).send({
           message: `Not found Player with Id ${req.params.playerId}`,
         });

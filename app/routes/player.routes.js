@@ -1,6 +1,5 @@
 module.exports = (app) => {
-  const players = require("../controllers/player.controller.js");
-
+  const players = require("../controllers/player.controller");
   // Create new player
   app.post("/players", players.create);
 

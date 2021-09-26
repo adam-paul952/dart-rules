@@ -17,7 +17,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Adam's application" });
 });
 
-require("./app/routes/player.routes.js")(app);
+require("./app/routes/player.routes")(app);
+require("./app/routes/user.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
