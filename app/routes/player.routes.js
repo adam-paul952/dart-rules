@@ -14,5 +14,5 @@ module.exports = (app) => {
   app.put("/players/:playerId", players.update);
 
   // Delete a player by Id
-  app.post("/players", players.delete);
+  app.delete("/players/:playerId", players.delete);
 };
