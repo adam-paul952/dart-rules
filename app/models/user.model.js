@@ -1,37 +1,76 @@
 const sql = require("./db");
+// const bcrypt = require("bcryptjs");
 
 // Constructor
 const User = function (user) {
+  this.name = user.name;
   this.username = user.username;
   this.password = user.password;
+  this.password_confirm = user.password_confirm;
 };
 
 User.create = (newUser, result) => {
-  sql.query(`INSERT INTO users SET ?`, newUser, (err, res) => {
-    if (err) {
-      console.log(`error: `, err);
-      result(err, null);
-      return;
+  sql.query(
+    `SELECT username FROM users WHERE username = ?`,
+    [newUser.username],
+    (err, res) => {
+      if (err) {
+        console.log(`Error: `, err);
+      }
+      if (res.length > 0) {
+        console.log(`Username is already in use`);
+        result({ kind: "in_use" }, null);
+        return;
+      } else if (newUser.password !== newUser.password_confirm) {
+        console.log(`Passwords do not match`);
+        result({ kind: "bad_password_match" }, null);
+        return;
+      }
+
+      // let hashedPassword = await bcrypt.hash(newUser.password, 8);
+      // console.log(hashedPassword);
+
+      sql.query(`INSERT INTO users SET ?`, newUser, (err, res) => {
+        if (err) {
+          console.log(`error: `, err);
+          result(err, null);
+          return;
+        }
+        console.log(`Created User: `, {
+          id: res.insertId,
+          name: newUser.name,
+          username: newUser.username,
+          password: hashedPassword,
+        });
+        result(null, {
+          id: res.insertId,
+          name: newUser.name,
+          username: newUser.username,
+          password: hashedPassword,
+        });
+      });
     }
-    console.log(`Created User: `, { id: res.insertId, ...newUser });
-    result(null, { id: res.insertId, ...newUser });
-  });
+  );
 };
 
-User.findById = (userId, result) => {
-  sql.query(`SELECT * FROM users WHERE id = ${userId}`, (err, res) => {
-    if (err) {
-      console.log(`Error: `, err);
-      result(err, null);
-      return;
+User.findById = (username, result) => {
+  sql.query(
+    `SELECT username FROM users WHERE username = ?`,
+    [username],
+    (err, res) => {
+      if (err) {
+        console.log(`Error: `, err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        console.log(`Found Player: `, res[0]);
+        result(null, res[0]);
+        return;
+      }
+      result({ kind: `not_found` }, null);
     }
-    if (res.length) {
-      console.log(`Found Player: `, res[0]);
-      result(null, res[0]);
-      return;
-    }
-    result({ kind: `not_found` }, null);
-  });
+  );
 };
 
 User.getAll = (result) => {

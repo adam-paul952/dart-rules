@@ -8,17 +8,28 @@ exports.create = (req, res) => {
       message: `Content cannot be empty`,
     });
   }
+
   // Create User
   const user = new User({
+    name: req.body.name,
     username: req.body.username,
     password: req.body.password,
+    password_confirm: req.body.password_confirm,
   });
   // Save User in database
   User.create(user, (err, data) => {
     if (err) {
-      res.status(500).send({
-        message: err.message || `Error occured while creating User`,
-      });
+      if (err.kind === `in_use`) {
+        res.status(409).send({
+          message: `Username is already in use`,
+        });
+      } else if (err.kind === `bad_password_match`) {
+        res.status(409).send({ message: `Passwords do not match` });
+      } else {
+        res.status(500).send({
+          message: err.message || `Error occured while creating User`,
+        });
+      }
     } else {
       res.send(data);
     }
