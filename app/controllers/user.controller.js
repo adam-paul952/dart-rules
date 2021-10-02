@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 
 // Create and save new user
-exports.create = (req, res) => {
+exports.register = (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
@@ -14,10 +14,10 @@ exports.create = (req, res) => {
     name: req.body.name,
     username: req.body.username,
     password: req.body.password,
-    password_confirm: req.body.password_confirm,
+    passwordConfirm: req.body.passwordConfirm,
   });
   // Save User in database
-  User.create(user, (err, data) => {
+  User.register(user, (err, data) => {
     if (err) {
       if (err.kind === `in_use`) {
         res.status(409).send({
@@ -28,6 +28,31 @@ exports.create = (req, res) => {
       } else {
         res.status(500).send({
           message: err.message || `Error occured while creating User`,
+        });
+      }
+    } else {
+      res.send(data);
+    }
+  });
+};
+
+// Login user
+exports.login = (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  User.login(username, password, (err, data) => {
+    if (err) {
+      if (err.kind === `not_found`) {
+        res.status(409).send({
+          message: `Username not found`,
+        });
+      } else if (err.kind === "incorrect_password") {
+        res.status(409).send({
+          message: `Wrong username/password combination`,
+        });
+      } else {
+        res.status(500).send({
+          message: err.message || `Error occured while retrieving user`,
         });
       }
     } else {
@@ -99,11 +124,11 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: `Could not delete player with Id ${req.params.userId}`,
+          message: `Could not delete user with Id ${req.params.userId}`,
         });
       }
     } else {
-      res.send({ message: `Player was successfully deleted!` });
+      res.send({ message: `User was successfully deleted!` });
     }
   });
 };

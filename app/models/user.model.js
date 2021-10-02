@@ -1,19 +1,19 @@
 const sql = require("./db");
-// const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 // Constructor
 const User = function (user) {
   this.name = user.name;
   this.username = user.username;
   this.password = user.password;
-  this.password_confirm = user.password_confirm;
+  this.passwordConfirm = user.passwordConfirm;
 };
 
-User.create = (newUser, result) => {
+User.register = (newUser, result) => {
   sql.query(
     `SELECT username FROM users WHERE username = ?`,
     [newUser.username],
-    (err, res) => {
+    async (err, res) => {
       if (err) {
         console.log(`Error: `, err);
       }
@@ -21,34 +21,64 @@ User.create = (newUser, result) => {
         console.log(`Username is already in use`);
         result({ kind: "in_use" }, null);
         return;
-      } else if (newUser.password !== newUser.password_confirm) {
+      } else if (newUser.password !== newUser.passwordConfirm) {
         console.log(`Passwords do not match`);
         result({ kind: "bad_password_match" }, null);
         return;
       }
 
-      // let hashedPassword = await bcrypt.hash(newUser.password, 8);
-      // console.log(hashedPassword);
+      let hashedPassword = await bcrypt.hash(newUser.password, 8);
 
-      sql.query(`INSERT INTO users SET ?`, newUser, (err, res) => {
-        if (err) {
-          console.log(`error: `, err);
-          result(err, null);
-          return;
+      sql.query(
+        `INSERT INTO users SET ?`,
+        {
+          name: newUser.name,
+          username: newUser.username,
+          password: hashedPassword,
+        },
+        (err, res) => {
+          if (err) {
+            console.log(`error: `, err);
+            result(err, null);
+            return;
+          }
+          console.log(`Created User: `, newUser);
+          result(null, {
+            id: res.insertId,
+            ...newUser,
+          });
         }
-        console.log(`Created User: `, {
-          id: res.insertId,
-          name: newUser.name,
-          username: newUser.username,
-          password: hashedPassword,
-        });
-        result(null, {
-          id: res.insertId,
-          name: newUser.name,
-          username: newUser.username,
-          password: hashedPassword,
-        });
-      });
+      );
+    }
+  );
+};
+
+User.login = (username, password, result) => {
+  sql.query(
+    `SELECT * FROM users WHERE username = ?`,
+    [username],
+    async (err, res) => {
+      console.log(`username: ${username}`);
+      if (err) {
+        console.log(`Error: `, err);
+        result(err, null);
+        return;
+      } else {
+        if (res.length === 0) {
+          console.log(`User does not exist`);
+          result({ kind: "not_found" }, null);
+          return;
+        } else {
+          const hashedPassword = res[0].password;
+          if (await bcrypt.compare(password, hashedPassword)) {
+            console.log(`Successful Login!`);
+            result(null, res[0]);
+          } else {
+            console.log(`Password Incorrect`);
+            result({ kind: "incorrect_password" }, null);
+          }
+        }
+      }
     }
   );
 };
