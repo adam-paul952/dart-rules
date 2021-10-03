@@ -11,6 +11,7 @@ exports.create = (req, res) => {
   // Create Player
   const player = new Player({
     name: req.body.name,
+    users_id: req.body.users_id,
   });
   // Save player in database
   Player.create(player, (err, data) => {

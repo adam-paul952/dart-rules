@@ -3,6 +3,7 @@ const sql = require("./db");
 // Constructor
 const Player = function (player) {
   this.name = player.name;
+  this.users_id = player.users_id;
 };
 
 Player.create = (newPlayer, result) => {
