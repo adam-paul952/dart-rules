@@ -3,8 +3,8 @@ module.exports = (app) => {
   // Create new player
   app.post("/players", players.create);
 
-  // Retrieve all Players
-  app.get("/players", players.findAll);
+  // Retrieve all Players from a user
+  app.get("/players/:userId", players.findAll);
 
   //Retrieve a single player by ID
   app.get("/players/:playerId", players.findOne);

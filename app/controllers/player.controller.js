@@ -27,12 +27,22 @@ exports.create = (req, res) => {
 
 // Retrieve all players from the datatbase
 exports.findAll = (req, res) => {
-  Player.getAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || `Unwanted error message.`,
-      });
-    else res.send(data);
+  Player.getAll(req.params.userId, (err, data) => {
+    if (err) {
+      if (err.kind === `no_user_found`) {
+        res.status(404).send({
+          message: `No user found`,
+        });
+      } else if (isNaN(req.params.userId)) {
+        res.status(404).send({
+          message: `UserId must be a number`,
+        });
+      } else {
+        res.status(500).send({
+          message: err.message || `Unwanted error message.`,
+        });
+      }
+    } else res.send(data);
   });
 };
 
