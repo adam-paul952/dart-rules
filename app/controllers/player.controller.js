@@ -8,10 +8,12 @@ exports.create = (req, res) => {
       message: `Content can not be empty!`,
     });
   }
+
+  const { name, users_id } = req.body;
   // Create Player
   const player = new Player({
-    name: req.body.name,
-    users_id: req.body.users_id,
+    name,
+    users_id,
   });
   // Save player in database
   Player.create(player, (err, data) => {
@@ -26,12 +28,15 @@ exports.create = (req, res) => {
 };
 
 // Retrieve all players from the datatbase
-exports.findAll = (req, res) => {
-  Player.getAll(req.params.userId, (err, data) => {
+exports.findAllByUserId = (req, res) => {
+  if (!req.params) {
+    res.send({ message: `User Id must be supplied` });
+  }
+  Player.getByUserId(req.params.userId, (err, data) => {
     if (err) {
-      if (err.kind === `no_user_found`) {
+      if (err.kind === `no_players_found`) {
         res.status(404).send({
-          message: `No user found`,
+          message: `No players found`,
         });
       } else if (isNaN(req.params.userId)) {
         res.status(404).send({

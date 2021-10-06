@@ -4,7 +4,7 @@ module.exports = (app) => {
   app.post("/players", players.create);
 
   // Retrieve all Players from a user
-  app.get("/players/:userId", players.findAll);
+  app.get("/players/:userId", players.findAllByUserId);
 
   //Retrieve a single player by ID
   app.get("/players/:playerId", players.findOne);

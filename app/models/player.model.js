@@ -34,7 +34,11 @@ Player.findById = (playerId, result) => {
   });
 };
 
-Player.getAll = (userId, result) => {
+Player.getByUserId = (userId, result) => {
+  if (!userId) {
+    result({ kind: `no_user_found` }, null);
+    return;
+  }
   sql.query(`SELECT * FROM players WHERE users_id = ${userId}`, (err, res) => {
     if (err) {
       console.log(`error: `, err);

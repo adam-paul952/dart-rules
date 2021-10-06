@@ -6,7 +6,6 @@ const User = function (user) {
   this.name = user.name;
   this.username = user.username;
   this.password = user.password;
-  this.passwordConfirm = user.passwordConfirm;
 };
 
 User.register = (newUser, result) => {
@@ -20,10 +19,6 @@ User.register = (newUser, result) => {
       if (res.length > 0) {
         console.log(`Username is already in use`);
         result({ kind: "in_use" }, null);
-        return;
-      } else if (newUser.password !== newUser.passwordConfirm) {
-        console.log(`Passwords do not match`);
-        result({ kind: "bad_password_match" }, null);
         return;
       }
 

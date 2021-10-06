@@ -1,7 +1,7 @@
 const User = require("../models/user.model");
 
 // Create and save new user
-exports.register = (req, res) => {
+exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
@@ -9,12 +9,13 @@ exports.register = (req, res) => {
     });
   }
 
+  const { name, username, password } = req.body;
+
   // Create User
   const user = new User({
-    name: req.body.name,
-    username: req.body.username,
-    password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm,
+    name,
+    username,
+    password,
   });
   // Save User in database
   User.register(user, (err, data) => {
@@ -23,8 +24,6 @@ exports.register = (req, res) => {
         res.status(409).send({
           message: `Username is already in use`,
         });
-      } else if (err.kind === `bad_password_match`) {
-        res.status(409).send({ message: `Passwords do not match` });
       } else {
         res.status(500).send({
           message: err.message || `Error occured while creating User`,
@@ -38,8 +37,7 @@ exports.register = (req, res) => {
 
 // Login user
 exports.login = (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { username, password } = req.body;
   User.login(username, password, (err, data) => {
     if (err) {
       if (err.kind === `not_found`) {
