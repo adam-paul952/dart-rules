@@ -18,46 +18,47 @@ Player.create = (newPlayer, result) => {
   });
 };
 
-Player.findById = (playerId, result) => {
-  sql.query(`SELECT * FROM players WHERE id = ${playerId}`, (err, res) => {
-    if (err) {
-      console.log(`error: `, err);
-      result(err, null);
-      return;
+// Find a single player by Name
+Player.findByName = (playerName, result) => {
+  sql.query(
+    `SELECT * FROM players WHERE name = '${playerName}'`,
+    (err, res) => {
+      if (err) {
+        console.log(`error: `, err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        console.log(`found player: `, res[0]);
+        result(null, res[0]);
+        return;
+      }
+      result({ kind: `no_player_found` }, null);
     }
-    if (res.length) {
-      console.log(`found player: `, res[0]);
-      result(null, res[0]);
-      return;
-    }
-    result({ kind: `not_found` }, null);
-  });
+  );
 };
 
+// Find all players for a single user
 Player.getByUserId = (userId, result) => {
-  if (!userId) {
-    result({ kind: `no_user_found` }, null);
-    return;
-  }
-  sql.query(`SELECT * FROM players WHERE users_id = ${userId}`, (err, res) => {
-    if (err) {
-      console.log(`error: `, err);
-      result(err, null);
-      return;
+  sql.query(
+    `SELECT * FROM players WHERE users_id = '${userId}'`,
+    (err, res) => {
+      if (err) {
+        console.log(`error: `, err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        console.log(`players: `, res);
+        result(null, res);
+        return;
+      }
+      result({ kind: `no_players_found` }, null);
     }
-    if (res.length === 0) {
-      result({ kind: `no_user_found` }, null);
-      return;
-    }
-    // if (!userId) {
-    //   result({ kind: `no_user_found` }, null);
-    //   return;
-    // }
-    console.log(`players: `, res);
-    result(null, res);
-  });
+  );
 };
 
+// Update Player by Id
 Player.updateById = (id, player, result) => {
   sql.query(
     `UPDATE players SET name = ? WHERE id = ?`,
@@ -78,6 +79,7 @@ Player.updateById = (id, player, result) => {
   );
 };
 
+// Delete a player by Id
 Player.remove = (id, result) => {
   sql.query(`DELETE FROM players WHERE id = ?`, id, (err, res) => {
     if (err) {

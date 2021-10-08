@@ -3,11 +3,12 @@ module.exports = (app) => {
   // Create new player
   app.post("/players", players.create);
 
-  // Retrieve all Players from a user
-  app.get("/players/:userId", players.findAllByUserId);
+  // Find a single player by Name
+  app.get("/players/byName/:playerName", players.findOneByName);
 
-  //Retrieve a single player by ID
-  app.get("/players/:playerId", players.findOne);
+  // Find all players for a user
+  app.get("/players/:userId", players.findAllByUserId);
+  app.get("/players/", players.findAllByUserId);
 
   // Update a player by Id
   app.put("/players/:playerId", players.update);

@@ -27,46 +27,40 @@ exports.create = (req, res) => {
   });
 };
 
-// Retrieve all players from the datatbase
-exports.findAllByUserId = (req, res) => {
-  if (!req.params) {
-    res.send({ message: `User Id must be supplied` });
-  }
-  Player.getByUserId(req.params.userId, (err, data) => {
+// Find a single player by Name
+exports.findOneByName = (req, res) => {
+  Player.findByName(req.params.playerName, (err, data) => {
+    console.log(req.params.playerName);
     if (err) {
-      if (err.kind === `no_players_found`) {
+      if (err.kind === `no_player_found`) {
         res.status(404).send({
-          message: `No players found`,
-        });
-      } else if (isNaN(req.params.userId)) {
-        res.status(404).send({
-          message: `UserId must be a number`,
+          message: `No ${req.params.playerName} found.`,
         });
       } else {
         res.status(500).send({
-          message: err.message || `Unwanted error message.`,
-        });
-      }
-    } else res.send(data);
-  });
-};
-
-// Find a single player by Id
-exports.findOne = (req, res) => {
-  Player.findById(req.params.playerId, (err, data) => {
-    if (err) {
-      if (err.kind === `not_found`) {
-        res.status(404).send({
-          message: `No found player with id ${req.params.playerId}.`,
-        });
-      } else {
-        res.status(500).send({
-          message: `Error retrieving Player with Id ${req.params.playerId}`,
+          message: `Error retrieving ${req.params.playerName}`,
         });
       }
     } else {
       res.send(data);
     }
+  });
+};
+
+// Find all players for a single user
+exports.findAllByUserId = (req, res) => {
+  Player.getByUserId(req.params.userId, (err, data) => {
+    if (err) {
+      if (err.kind === `no_players_found`) {
+        res.status(404).send({
+          message: `There were no players found`,
+        });
+      } else {
+        res.status(500).send({
+          message: err.message || `Error getting players.`,
+        });
+      }
+    } else res.send(data);
   });
 };
 
@@ -95,13 +89,13 @@ exports.update = (req, res) => {
   });
 };
 
-// Delete a player with the specified playerId
+// Delete a player by Id
 exports.delete = (req, res) => {
   Player.remove(req.params.playerId, (err, data) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
-          message: `Not found Player with Id ${req.params.playerId}`,
+          message: `No player found with Id ${req.params.playerId}`,
         });
       } else {
         res.status(500).send({
@@ -109,7 +103,9 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({ message: `Player was successfully deleted` });
+      res.send({
+        message: `Player ${req.params.playerId} was successfully deleted`,
+      });
     }
   });
 };
