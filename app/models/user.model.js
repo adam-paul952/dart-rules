@@ -8,6 +8,7 @@ const User = function (user) {
   this.password = user.password;
 };
 
+// Register new user into the database
 User.register = (newUser, result) => {
   sql.query(
     `SELECT username FROM users WHERE username = ?`,
@@ -23,31 +24,29 @@ User.register = (newUser, result) => {
       }
 
       let hashedPassword = await bcrypt.hash(newUser.password, 8);
+      newUser = {
+        name: newUser.name,
+        username: newUser.username,
+        password: hashedPassword,
+      };
 
-      sql.query(
-        `INSERT INTO users SET ?`,
-        {
-          name: newUser.name,
-          username: newUser.username,
-          password: hashedPassword,
-        },
-        (err, res) => {
-          if (err) {
-            console.log(`error: `, err);
-            result(err, null);
-            return;
-          }
-          console.log(`Created User: `, newUser);
-          result(null, {
-            id: res.insertId,
-            ...newUser,
-          });
+      sql.query(`INSERT INTO users SET ?`, newUser, (err, res) => {
+        if (err) {
+          console.log(`error: `, err);
+          result(err, null);
+          return;
         }
-      );
+        console.log(`Created User: `, newUser);
+        result(null, {
+          id: res.insertId,
+          ...newUser,
+        });
+      });
     }
   );
 };
 
+// Log a user into the database
 User.login = (username, password, result) => {
   sql.query(
     `SELECT * FROM users WHERE username = ?`,
@@ -60,8 +59,8 @@ User.login = (username, password, result) => {
         return;
       } else {
         if (res.length === 0) {
-          console.log(`User does not exist`);
-          result({ kind: "not_found" }, null);
+          console.log(`No user found`);
+          result({ kind: "incorrect_credentials" }, null);
           return;
         } else {
           const hashedPassword = res[0].password;
@@ -70,7 +69,7 @@ User.login = (username, password, result) => {
             result(null, res[0]);
           } else {
             console.log(`Password Incorrect`);
-            result({ kind: "incorrect_password" }, null);
+            result({ kind: "incorrect_credentials" }, null);
           }
         }
       }
@@ -78,26 +77,7 @@ User.login = (username, password, result) => {
   );
 };
 
-User.findById = (username, result) => {
-  sql.query(
-    `SELECT username FROM users WHERE username = ?`,
-    [username],
-    (err, res) => {
-      if (err) {
-        console.log(`Error: `, err);
-        result(err, null);
-        return;
-      }
-      if (res.length) {
-        console.log(`Found Player: `, res[0]);
-        result(null, res[0]);
-        return;
-      }
-      result({ kind: `not_found` }, null);
-    }
-  );
-};
-
+// Return all users
 User.getAll = (result) => {
   sql.query(`SELECT * from users`, (err, res) => {
     if (err) {
@@ -110,6 +90,27 @@ User.getAll = (result) => {
   });
 };
 
+// Find user by Id
+User.findByUsername = (username, result) => {
+  sql.query(
+    `SELECT * FROM users WHERE username = '${username}'`,
+    (err, res) => {
+      if (err) {
+        console.log(`Error: `, err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        console.log(`Found User: `, res[0]);
+        result(null, res[0]);
+        return;
+      }
+      result({ kind: `not_found` }, null);
+    }
+  );
+};
+
+// Update user by Id
 User.updateById = (id, user, result) => {
   sql.query(
     `UPDATE users SET username = ? WHERE id = ?`,
@@ -120,7 +121,7 @@ User.updateById = (id, user, result) => {
         result(err, null);
         return;
       }
-      if (res.affectedRows == 0) {
+      if (res.affectedRows === 0) {
         result({ kind: `not_found` }, null);
         return;
       }
@@ -130,6 +131,7 @@ User.updateById = (id, user, result) => {
   );
 };
 
+// Delete user by Id
 User.remove = (id, result) => {
   sql.query(`DELETE FROM users WHERE id = ?`, id, (err, res) => {
     if (err) {
@@ -137,7 +139,7 @@ User.remove = (id, result) => {
       result(err, null);
       return;
     }
-    if (res.affectedRows == 0) {
+    if (res.affectedRows === 0) {
       result({ kind: `not_found` }, null);
       return;
     }

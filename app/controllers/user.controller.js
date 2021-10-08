@@ -8,7 +8,6 @@ exports.create = (req, res) => {
       message: `Content cannot be empty`,
     });
   }
-
   const { name, username, password } = req.body;
 
   // Create User
@@ -35,16 +34,12 @@ exports.create = (req, res) => {
   });
 };
 
-// Login user
+// Log in user
 exports.login = (req, res) => {
   const { username, password } = req.body;
   User.login(username, password, (err, data) => {
     if (err) {
-      if (err.kind === `not_found`) {
-        res.status(409).send({
-          message: `Username not found`,
-        });
-      } else if (err.kind === "incorrect_password") {
+      if (err.kind === "incorrect_credentials") {
         res.status(409).send({
           message: `Wrong username/password combination`,
         });
@@ -59,7 +54,7 @@ exports.login = (req, res) => {
   });
 };
 
-// Retrieve all users from database
+// Find all users in the database
 exports.findAll = (req, res) => {
   User.getAll((err, data) => {
     if (err) {
@@ -72,16 +67,17 @@ exports.findAll = (req, res) => {
   });
 };
 
-exports.findOne = (req, res) => {
-  User.findById(req.params.userId, (err, data) => {
+// Find a user by Id
+exports.findOneByUsername = (req, res) => {
+  User.findByUsername(req.params.username, (err, data) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
-          message: `No user found with ${req.params.userId}`,
+          message: `No user found with username ${req.params.username}`,
         });
       } else {
         res.status(500).send({
-          message: `Error retrieving User with Id ${req.params.userId}`,
+          message: `Error retrieving ${req.params.username}`,
         });
       }
     } else {
@@ -90,6 +86,7 @@ exports.findOne = (req, res) => {
   });
 };
 
+// Update a user by Id
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({
@@ -113,6 +110,7 @@ exports.update = (req, res) => {
   });
 };
 
+// Delete user by Id
 exports.delete = (req, res) => {
   User.remove(req.params.userId, (err, data) => {
     if (err) {
