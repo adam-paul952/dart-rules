@@ -1,7 +1,9 @@
 const User = require("../models/user.model");
 
+const bcrypt = require("bcryptjs");
+
 // Create and save new user
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
@@ -9,12 +11,13 @@ exports.create = (req, res) => {
     });
   }
   const { name, username, password } = req.body;
+  let hashedPassword = await bcrypt.hash(password, 8);
 
   // Create User
   const user = new User({
     name,
     username,
-    password,
+    password: hashedPassword,
   });
   // Save User in database
   User.register(user, (err, data) => {
@@ -37,19 +40,28 @@ exports.create = (req, res) => {
 // Log in user
 exports.login = (req, res) => {
   const { username, password } = req.body;
-  User.login(username, password, (err, data) => {
+  User.login(username, async (err, data) => {
+    if (!data) {
+      console.log(`No user found`);
+      res.status(409).send({ message: `Username not found` });
+      return;
+    }
+    const hashedPassword = data.password;
     if (err) {
-      if (err.kind === "incorrect_credentials") {
+      if (err.kind === "incorrect_username") {
         res.status(409).send({
-          message: `Wrong username/password combination`,
+          message: `Wrong username`,
         });
       } else {
         res.status(500).send({
           message: err.message || `Error occured while retrieving user`,
         });
       }
+    } else if (!(await bcrypt.compare(password, hashedPassword))) {
+      res.status(409).send({ message: `Incorrect password` });
     } else {
-      res.send(data);
+      console.log(`Successful login!`);
+      res.status(200).send(data);
     }
   });
 };

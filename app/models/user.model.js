@@ -1,5 +1,4 @@
 const sql = require("./db");
-const bcrypt = require("bcryptjs");
 
 // Constructor
 const User = function (user) {
@@ -13,7 +12,7 @@ User.register = (newUser, result) => {
   sql.query(
     `SELECT username FROM users WHERE username = ?`,
     [newUser.username],
-    async (err, res) => {
+    (err, res) => {
       if (err) {
         console.log(`Error: `, err);
       }
@@ -22,14 +21,6 @@ User.register = (newUser, result) => {
         result({ kind: "in_use" }, null);
         return;
       }
-
-      let hashedPassword = await bcrypt.hash(newUser.password, 8);
-      newUser = {
-        name: newUser.name,
-        username: newUser.username,
-        password: hashedPassword,
-      };
-
       sql.query(`INSERT INTO users SET ?`, newUser, (err, res) => {
         if (err) {
           console.log(`error: `, err);
@@ -47,32 +38,17 @@ User.register = (newUser, result) => {
 };
 
 // Log a user into the database
-User.login = (username, password, result) => {
+User.login = (username, result) => {
   sql.query(
     `SELECT * FROM users WHERE username = ?`,
     [username],
-    async (err, res) => {
-      console.log(`username: ${username}`);
+    (err, res) => {
       if (err) {
         console.log(`Error: `, err);
         result(err, null);
         return;
-      } else {
-        if (res.length === 0) {
-          console.log(`No user found`);
-          result({ kind: "incorrect_credentials" }, null);
-          return;
-        } else {
-          const hashedPassword = res[0].password;
-          if (await bcrypt.compare(password, hashedPassword)) {
-            console.log(`Successful Login!`);
-            result(null, res[0]);
-          } else {
-            console.log(`Password Incorrect`);
-            result({ kind: "incorrect_credentials" }, null);
-          }
-        }
       }
+      result(null, res[0]);
     }
   );
 };
