@@ -11,6 +11,21 @@ exports.create = async (req, res) => {
     });
   }
   const { name, username, password } = req.body;
+
+  if (username) {
+    User.findUserByUsername(username, (err, data) => {
+      if (data) {
+        res.status(400).send({ message: `Username is taken` });
+        return;
+      }
+    });
+  }
+
+  if (!password) {
+    res.status(400).send({ message: `Password can not be empty` });
+    return;
+  }
+
   let hashedPassword = await bcrypt.hash(password, 8);
 
   // Create User
@@ -19,20 +34,15 @@ exports.create = async (req, res) => {
     username,
     password: hashedPassword,
   });
+
   // Save User in database
-  User.register(user, (err, data) => {
+  User.create(user, (err, data) => {
     if (err) {
-      if (err.kind === `in_use`) {
-        res.status(409).send({
-          message: `Username is already in use`,
-        });
-      } else {
-        res.status(500).send({
-          message: err.message || `Error occured while creating User`,
-        });
-      }
+      res.status(500).send({
+        message: err.message || `Error occured while creating User`,
+      });
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 };
@@ -40,28 +50,27 @@ exports.create = async (req, res) => {
 // Log in user
 exports.login = (req, res) => {
   const { username, password } = req.body;
-  User.login(username, async (err, data) => {
-    if (!data) {
-      console.log(`No user found`);
-      res.status(409).send({ message: `Username not found` });
-      return;
-    }
-    const hashedPassword = data.password;
+  User.findUserByUsername(username, async (err, data) => {
     if (err) {
-      if (err.kind === "incorrect_username") {
+      if (err.kind === "not_found") {
         res.status(409).send({
-          message: `Wrong username`,
+          message: `No user found`,
         });
+        return;
       } else {
         res.status(500).send({
           message: err.message || `Error occured while retrieving user`,
         });
       }
-    } else if (!(await bcrypt.compare(password, hashedPassword))) {
-      res.status(409).send({ message: `Incorrect password` });
-    } else {
+    }
+    const hashedPassword = data.password;
+    const passwordCompared = await bcrypt.compare(password, hashedPassword);
+    if (passwordCompared) {
       console.log(`Successful login!`);
       res.status(200).send(data);
+    } else {
+      console.log(`Incorrect Password`);
+      res.status(409).send({ message: `Incorrect password` });
     }
   });
 };
@@ -74,7 +83,7 @@ exports.findAll = (req, res) => {
         message: err.message || `Error occured while fetching Users`,
       });
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 };
@@ -93,7 +102,7 @@ exports.findOneByUsername = (req, res) => {
         });
       }
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 };
@@ -117,7 +126,7 @@ exports.update = (req, res) => {
         });
       }
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 };
@@ -136,7 +145,7 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({ message: `User was successfully deleted!` });
+      res.status(200).send({ message: `User was successfully deleted!` });
     }
   });
 };

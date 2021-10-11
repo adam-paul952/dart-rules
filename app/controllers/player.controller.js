@@ -30,7 +30,6 @@ exports.create = (req, res) => {
 // Find a single player by Name
 exports.findOneByName = (req, res) => {
   Player.findByName(req.params.playerName, (err, data) => {
-    console.log(req.params.playerName);
     if (err) {
       if (err.kind === `no_player_found`) {
         res.status(404).send({

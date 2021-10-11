@@ -8,49 +8,19 @@ const User = function (user) {
 };
 
 // Register new user into the database
-User.register = (newUser, result) => {
-  sql.query(
-    `SELECT username FROM users WHERE username = ?`,
-    [newUser.username],
-    (err, res) => {
-      if (err) {
-        console.log(`Error: `, err);
-      }
-      if (res.length > 0) {
-        console.log(`Username is already in use`);
-        result({ kind: "in_use" }, null);
-        return;
-      }
-      sql.query(`INSERT INTO users SET ?`, newUser, (err, res) => {
-        if (err) {
-          console.log(`error: `, err);
-          result(err, null);
-          return;
-        }
-        console.log(`Created User: `, newUser);
-        result(null, {
-          id: res.insertId,
-          ...newUser,
-        });
-      });
+User.create = (newUser, result) => {
+  sql.query(`INSERT INTO users SET ?`, newUser, (err, res) => {
+    if (err) {
+      console.log(`error: `, err);
+      result(err, null);
+      return;
     }
-  );
-};
-
-// Log a user into the database
-User.login = (username, result) => {
-  sql.query(
-    `SELECT * FROM users WHERE username = ?`,
-    [username],
-    (err, res) => {
-      if (err) {
-        console.log(`Error: `, err);
-        result(err, null);
-        return;
-      }
-      result(null, res[0]);
-    }
-  );
+    console.log(`Created User: `, newUser);
+    result(null, {
+      id: res.insertId,
+      ...newUser,
+    });
+  });
 };
 
 // Return all users
@@ -67,7 +37,7 @@ User.getAll = (result) => {
 };
 
 // Find user by Id
-User.findByUsername = (username, result) => {
+User.findUserByUsername = (username, result) => {
   sql.query(
     `SELECT * FROM users WHERE username = '${username}'`,
     (err, res) => {
