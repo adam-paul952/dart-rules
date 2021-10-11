@@ -12,19 +12,18 @@ exports.create = async (req, res) => {
   }
   const { name, username, password } = req.body;
 
-  if (username) {
-    User.findUserByUsername(username, (err, data) => {
-      if (data) {
-        res.status(400).send({ message: `Username is taken` });
-        return;
-      }
-    });
-  }
-
-  if (!password) {
-    res.status(400).send({ message: `Password can not be empty` });
+  if (!username || !password) {
+    res.status(400).send({ message: `Username / Password can not be empty` });
     return;
   }
+
+  User.findUserByUsername(username, (err, data) => {
+    if (data) {
+      res.status(400).send({ message: `Username is taken` });
+      console.log(`Username is taken`);
+      return;
+    }
+  });
 
   let hashedPassword = await bcrypt.hash(password, 8);
 
@@ -38,9 +37,7 @@ exports.create = async (req, res) => {
   // Save User in database
   User.create(user, (err, data) => {
     if (err) {
-      res.status(500).send({
-        message: err.message || `Error occured while creating User`,
-      });
+      return;
     } else {
       res.status(200).send(data);
     }
