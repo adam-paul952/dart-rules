@@ -5,11 +5,6 @@ const bcrypt = require("bcryptjs");
 // Create and save new user
 exports.create = async (req, res) => {
   // Validate request
-  if (!req.body) {
-    res.status(400).send({
-      message: `Content cannot be empty`,
-    });
-  }
   const { name, username, password } = req.body;
 
   if (!username || !password) {
@@ -17,13 +12,18 @@ exports.create = async (req, res) => {
     return;
   }
 
-  User.findUserByUsername(username, (err, data) => {
+  const userFound = User.findUserByUsername(username, (err, data) => {
     if (data) {
       res.status(400).send({ message: `Username is taken` });
       console.log(`Username is taken`);
-      return;
+      return data;
     }
+    return null;
   });
+
+  if (!userFound) {
+    return;
+  }
 
   let hashedPassword = await bcrypt.hash(password, 8);
 
@@ -37,7 +37,9 @@ exports.create = async (req, res) => {
   // Save User in database
   User.create(user, (err, data) => {
     if (err) {
-      return;
+      res.status(500).send({
+        message: err.message || `Error occured while creating User`,
+      });
     } else {
       res.status(200).send(data);
     }
@@ -87,7 +89,7 @@ exports.findAll = (req, res) => {
 
 // Find a user by Id
 exports.findOneByUsername = (req, res) => {
-  User.findByUsername(req.params.username, (err, data) => {
+  User.findUserByUsername(req.params.username, (err, data) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
