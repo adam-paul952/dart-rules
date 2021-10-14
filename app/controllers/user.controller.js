@@ -87,25 +87,6 @@ exports.findAll = (req, res) => {
   });
 };
 
-// Find a user by Id
-exports.findOneByUsername = (req, res) => {
-  User.findUserByUsername(req.params.username, (err, data) => {
-    if (err) {
-      if (err.kind === `not_found`) {
-        res.status(404).send({
-          message: `No user found with username ${req.params.username}`,
-        });
-      } else {
-        res.status(500).send({
-          message: `Error retrieving ${req.params.username}`,
-        });
-      }
-    } else {
-      res.status(200).send(data);
-    }
-  });
-};
-
 // Update a user by Id
 exports.update = (req, res) => {
   if (!req.body) {
