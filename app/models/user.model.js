@@ -2,7 +2,6 @@ const sql = require("./db");
 
 // Constructor
 const User = function (user) {
-  this.name = user.name;
   this.username = user.username;
   this.password = user.password;
 };

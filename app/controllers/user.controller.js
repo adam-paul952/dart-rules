@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 // Create and save new user
 exports.create = async (req, res) => {
   // Validate request
-  const { name, username, password } = req.body;
+  const { username, password } = req.body;
 
   if (!username || !password) {
     res.status(400).send({ message: `Username / Password can not be empty` });
@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
     return null;
   });
 
-  if (!userFound) {
+  if (userFound) {
     return;
   }
 
@@ -29,7 +29,6 @@ exports.create = async (req, res) => {
 
   // Create User
   const user = new User({
-    name,
     username,
     password: hashedPassword,
   });
@@ -52,7 +51,8 @@ exports.login = (req, res) => {
   User.findUserByUsername(username, async (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
-        res.status(409).send({
+        console.log(`User not found`);
+        res.status(400).send({
           message: `No user found`,
         });
         return;
