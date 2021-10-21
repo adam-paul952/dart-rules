@@ -42,7 +42,7 @@ User.findUserByUsername = (username, result) => {
       if (err) {
         console.log(`Error: `, err);
         result(err, null);
-        return;
+        return true;
       }
       if (res.length) {
         console.log(`Found User: `, res[0]);
@@ -57,8 +57,8 @@ User.findUserByUsername = (username, result) => {
 // Update user by Id
 User.updateById = (id, user, result) => {
   sql.query(
-    `UPDATE users SET username = ? WHERE id = ?`,
-    [user.username, id],
+    `UPDATE users SET username = ?, password = ? WHERE id = ?`,
+    [user.username, user.password, id],
     (err, res) => {
       if (err) {
         console.log(`error: `, err);

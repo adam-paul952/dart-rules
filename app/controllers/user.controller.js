@@ -22,6 +22,7 @@ exports.create = async (req, res) => {
   });
 
   if (userFound) {
+    res.status(400).send({ message: "User already exists" });
     return;
   }
 
@@ -88,27 +89,35 @@ exports.findAll = (req, res) => {
 };
 
 // Update a user by Id
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
   if (!req.body) {
     res.status(400).send({
       message: `Content cannot be empty`,
     });
   }
-  User.updateById(req.params.userId, new User(req.body), (err, data) => {
-    if (err) {
-      if (err.kind === `not_found`) {
-        res.status(404).send({
-          message: `Error updating user with Id ${req.params.userId}`,
-        });
+  const { username, password } = req.body;
+
+  let hashedPassword = await bcrypt.hash(password, 8);
+
+  User.updateById(
+    req.params.userId,
+    new User({ username, password: hashedPassword }),
+    (err, data) => {
+      if (err) {
+        if (err.kind === `not_found`) {
+          res.status(404).send({
+            message: `Error updating user with Id ${req.params.userId}`,
+          });
+        } else {
+          res.status(500).send({
+            message: `Error updating User with Id ${req.params.userId}`,
+          });
+        }
       } else {
-        res.status(500).send({
-          message: `Error updating User with Id ${req.params.userId}`,
-        });
+        res.status(200).send(data);
       }
-    } else {
-      res.status(200).send(data);
     }
-  });
+  );
 };
 
 // Delete user by Id

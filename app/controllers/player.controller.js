@@ -9,10 +9,10 @@ exports.create = (req, res) => {
     });
   }
 
-  const { name, users_id } = req.body;
+  const { playerName, users_id } = req.body;
   // Create Player
   const player = new Player({
-    name,
+    playerName,
     users_id,
   });
   // Save player in database

@@ -2,7 +2,7 @@ const sql = require("./db");
 
 // Constructor
 const Player = function (player) {
-  this.name = player.name;
+  this.playerName = player.playerName;
   this.users_id = player.users_id;
 };
 
@@ -21,7 +21,7 @@ Player.create = (newPlayer, result) => {
 // Find a single player by Name
 Player.findByName = (playerName, result) => {
   sql.query(
-    `SELECT * FROM players WHERE name = '${playerName}'`,
+    `SELECT * FROM players WHERE playerName = '${playerName}'`,
     (err, res) => {
       if (err) {
         console.log(`error: `, err);
@@ -61,8 +61,8 @@ Player.getByUserId = (userId, result) => {
 // Update Player by Id
 Player.updateById = (id, player, result) => {
   sql.query(
-    `UPDATE players SET name = ? WHERE id = ?`,
-    [player.name, id],
+    `UPDATE players SET playerName = ? WHERE id = ?`,
+    [player.playerName, id],
     (err, res) => {
       if (err) {
         console.log(`error: `, err);

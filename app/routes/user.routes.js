@@ -6,9 +6,6 @@ module.exports = (app) => {
   // Login user
   app.post("/users/login", users.login);
 
-  // Retrieve all Users
-  app.get("/users", users.findAll);
-
   // Update user
   app.put("/users/:userId", users.update);
 
