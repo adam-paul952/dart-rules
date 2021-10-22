@@ -1,5 +1,8 @@
 module.exports = (app) => {
   const users = require("../controllers/user.controller");
+  // Send ping request to server
+  app.get("/users/ping", users.ping);
+
   // Create new user
   app.post("/users", users.create);
 

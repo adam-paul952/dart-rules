@@ -138,3 +138,11 @@ exports.delete = (req, res) => {
     }
   });
 };
+
+exports.ping = (req, res) => {
+  if (!res) {
+    res.status(500).send({ message: `No server Connection` });
+  }
+  res.status(200).send({ message: `Successful ping` });
+  console.log(`Successful ping`);
+};
