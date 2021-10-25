@@ -2,7 +2,7 @@ const PlayerStats = require("../models/playerStats.model");
 
 // Find all Player stats in database
 exports.findAllStats = (req, res) => {
-  PlayerStats.findAllPlayerStats((err, data) => {
+  PlayerStats.findAllPlayerStats(req.params.userId, (err, data) => {
     if (err) {
       res.status(500).send({
         message: err.message || `Error occured while fetching player stats`,

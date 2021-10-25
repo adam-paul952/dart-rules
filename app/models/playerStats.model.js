@@ -7,16 +7,23 @@ const PlayerStats = function (playerStats) {
   this.player_id = playerStats.player_id;
 };
 // Find all player Stats
-PlayerStats.findAllPlayerStatsById = (result) => {
-  sql.query(`SELECT * FROM stats`, (err, res) => {
-    if (err) {
-      console.log(`error:`, err);
-      result(err, null);
-      return;
+PlayerStats.findAllPlayerStats = (userId, result) => {
+  sql.query(
+    `SELECT playerName, gamesPlayed, gamesWon, winPercentage
+    FROM stats
+    INNER JOIN players ON stats.player_id = players.id
+    INNER JOIN users ON players.users_id = users.id
+    WHERE users_id = ${userId} `,
+    (err, res) => {
+      if (err) {
+        console.log(`error:`, err);
+        result(err, null);
+        return;
+      }
+      console.log(`Player Stats: `, res);
+      result(null, res);
     }
-    console.log(`Player Stats: `, res);
-    result(null, res);
-  });
+  );
 };
 
 // Create new Stats for player

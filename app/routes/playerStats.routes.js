@@ -1,8 +1,8 @@
 module.exports = (app) => {
   const playerStats = require("../controllers/playerStats.controller");
 
-  // Get All Player Stats
-  app.get("/playerStats/", playerStats.findAllStats);
+  // Get All Player Stats Based on user id
+  app.get("/playerStats/:userId", playerStats.findAllStats);
 
   // Find stats for a single Player
   app.get("/playerStats/:playerId", playerStats.findStatsForOne);
