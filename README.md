@@ -12,9 +12,15 @@ The scoreboard alone will only hold player names until the browser is closed. Th
 
 #### **Getting Started**
 
-In order to use this database you'll need to install MySQL, here is a great starter link by [w3schools](https://www.w3schools.com/nodejs/nodejs_mysql.asp).
+In order to use this database you'll need to install MySQL, here is a great starter link by [W3schools](https://www.w3schools.com/nodejs/nodejs_mysql.asp).
 
-Once that is up and running, you have to open `db.js` and change the variables under the `connection` to your own credentials.
+Once you're ready to create a connection open `createDatabase.js` and replace `'host'`, `'user'` and `'password'` with your MySQL credentials copy and paste your credentials in `db.js` then replace `'database'` with the commented database name.
+
+In your editor type:
+
+    npm run createDb
+
+And thats it, your server instance and database are all up and running you can go ahead and create an account to keep track of your players!
 
 ---
 

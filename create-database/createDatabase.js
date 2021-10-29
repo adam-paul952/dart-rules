@@ -6,12 +6,24 @@ const connection = mysql.createConnection({
   host: process.env.DB_HOST, // Replace with your host
   user: process.env.DB_USER, // Replace with your user
   password: process.env.DB_PASSWORD, //  Replace with your password
-  database: process.env.DB, // "dartscoreboardserver"
 });
 
 connection.connect((error) => {
   if (error) throw error;
   console.log(`Successfully connected to database`);
-});
 
-module.exports = connection;
+  connection.query(
+    "CREATE DATABASE dartscoreboardserver",
+    function (err, result) {
+      if (err) throw err;
+      console.log("Database created");
+
+      connection.end(function (err) {
+        if (err) {
+          return console.log(err.message);
+        }
+        console.log(`Connection ended`);
+      });
+    }
+  );
+});

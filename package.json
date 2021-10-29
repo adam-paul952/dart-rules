@@ -17,7 +17,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-    "create_db": "node createDatabase.js"
+    "createDb": "node ./create-database/createDatabase.js && node ./create-database/createDatabaseTables.js"
   },
   "repository": {
     "type": "git",
