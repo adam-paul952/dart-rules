@@ -12,15 +12,36 @@ The scoreboard alone will only hold player names until the browser is closed. Th
 
 #### **Getting Started**
 
-In order to use this database you'll need to install MySQL, here is a great starter link by [W3schools](https://www.w3schools.com/nodejs/nodejs_mysql.asp).
+Clone this repository and ensure youre in the root folder:
+
+    cd dart-scoreboard-server
+    npm install
+
+In order to use this database you'll need to install MySQL, if you are unsure of how to install or create a connection here is a great starter link by [W3schools](https://www.w3schools.com/nodejs/nodejs_mysql.asp).
 
 Once you're ready to create a connection open `createDatabase.js` and replace `'host'`, `'user'` and `'password'` with your MySQL credentials copy and paste your credentials in `db.js` then replace `'database'` with the commented database name.
+
+**OR**
+
+I use `dotenv`, so it is already a required module in the files so you can create a `.env` file and assign your log in credentials and database name (dartscoreboardserver) :
+
+    DB_HOST=*yourhostname*
+    DB_USER=*yourusername*
+    DB_PASSWORD=*yourpassword*
+    DB=dartscoreboardserver
+    PORT=8080
 
 In your editor type:
 
     npm run createDb
 
-And thats it, your server instance and database are all up and running you can go ahead and create an account to keep track of your players!
+And thats it, your database is created with the necessary tables.
+
+Once that is done all you have to do is
+
+    npm run start
+
+and your database and server connection are up and running.
 
 ---
 
