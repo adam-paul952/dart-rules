@@ -6,24 +6,44 @@ connection.connect((error) => {
   if (error) throw error;
   console.log(`Successfully connected to database`);
 
-  const sqlUser =
-    "CREATE TABLE IF NOT EXISTS users (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, name varchar(255), username varchar(25) NOT NULL, password varchar(255) NOT NULL, created_on DATETIME NOT NULL DEFAULT NOW(), CONSTRAINT users_ak_1 UNIQUE (username)) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;";
+  const sqlUser = `CREATE TABLE IF NOT EXISTS users 
+      (id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      uuid varchar(40) NOT NULL,
+      name varchar(255), username varchar(25) NOT NULL, 
+      password varchar(255) NOT NULL, 
+      created_on DATETIME NOT NULL DEFAULT NOW(), 
+      CONSTRAINT users_ak_1 UNIQUE (username),
+      CONSTRAINT users_ak_2 UNIQUE (uuid))
+    ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;`;
 
   connection.query(sqlUser, function (err, result) {
     if (err) throw err;
     console.log("Users Table created");
   });
 
-  const sqlPlayer =
-    "CREATE TABLE IF NOT EXISTS players (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, playerName varchar(25) NOT NULL, users_id int NOT NULL, CONSTRAINT player_fk FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;";
+  const sqlPlayer = `CREATE TABLE IF NOT EXISTS players 
+      (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+      playerName varchar(25) NOT NULL, 
+      users_id varchar(40) NOT NULL, 
+      CONSTRAINT player_fk FOREIGN KEY (users_id) 
+      REFERENCES users(uuid) ON DELETE CASCADE ) 
+    ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;`;
 
   connection.query(sqlPlayer, function (err, result) {
     if (err) throw err;
     console.log("Players Table created");
   });
 
-  const sqlStats =
-    "CREATE TABLE IF NOT EXISTS stats(id int NOT NULL PRIMARY KEY AUTO_INCREMENT, gamesPlayed int DEFAULT 0, gamesWon int DEFAULT 0, winPercentage int DEFAULT 0, player_id int NOT NULL, CONSTRAINT playerStat_ak_1 UNIQUE (player_id), CONSTRAINT playerStat_fk FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE cascade) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;";
+  const sqlStats = `CREATE TABLE IF NOT EXISTS stats
+      (id int NOT NULL PRIMARY KEY AUTO_INCREMENT, 
+      gamesPlayed int DEFAULT 0, 
+      gamesWon int DEFAULT 0, 
+      winPercentage int DEFAULT 0, 
+      player_id int NOT NULL, 
+      CONSTRAINT playerStat_ak_1 UNIQUE (player_id), 
+      CONSTRAINT playerStat_fk FOREIGN KEY (player_id) 
+      REFERENCES players(id) ON DELETE cascade) 
+    ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;`;
 
   connection.query(sqlStats, function (err, result) {
     if (err) throw err;

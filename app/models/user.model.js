@@ -2,6 +2,7 @@ const sql = require("./db");
 
 // Constructor
 const User = function (user) {
+  this.uuid = user.uuid;
   this.username = user.username;
   this.password = user.password;
 };
@@ -57,7 +58,7 @@ User.findUserByUsername = (username, result) => {
 // Update user by Id
 User.updateById = (id, user, result) => {
   sql.query(
-    `UPDATE users SET username = ?, password = ? WHERE id = ?`,
+    `UPDATE users SET username = ?, password = ? WHERE uuid = ?`,
     [user.username, user.password, id],
     (err, res) => {
       if (err) {
@@ -77,7 +78,7 @@ User.updateById = (id, user, result) => {
 
 // Delete user by Id
 User.remove = (id, result) => {
-  sql.query(`DELETE FROM users WHERE id = ?`, id, (err, res) => {
+  sql.query(`DELETE FROM users WHERE uuid = ?`, id, (err, res) => {
     if (err) {
       console.log(`Error: `, err);
       result(err, null);

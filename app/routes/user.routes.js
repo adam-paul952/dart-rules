@@ -10,8 +10,8 @@ module.exports = (app) => {
   app.post("/users/login", users.login);
 
   // Update user
-  app.put("/users/:userId", users.update);
+  app.put("/users/:userUuid", users.update);
 
   // Delete User
-  app.delete("/users/:userId", users.delete);
+  app.delete("/users/:userUuid", users.delete);
 };

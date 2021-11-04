@@ -12,8 +12,9 @@ PlayerStats.findAllPlayerStats = (userId, result) => {
     `SELECT playerName, gamesPlayed, gamesWon, winPercentage
     FROM stats
     INNER JOIN players ON stats.player_id = players.id
-    INNER JOIN users ON players.users_id = users.id
-    WHERE users_id = ${userId} `,
+    INNER JOIN users ON players.users_id = users.uuid
+    WHERE users_id = ? `,
+    userId,
     (err, res) => {
       if (err) {
         console.log(`error:`, err);
@@ -49,13 +50,9 @@ PlayerStats.findStatsForSinglePlayer = (playerId, result) => {
       result(null, err);
       return;
     }
-    if (res.length) {
-      console.log(`players: `, res);
-      result(null, res);
-      return;
-    } else {
-      result({ kind: `no_players_found` }, null);
-    }
+
+    console.log(`players: `, res);
+    result(null, res);
   });
 };
 

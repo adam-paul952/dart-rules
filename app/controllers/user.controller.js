@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 
 const bcrypt = require("bcryptjs");
+const { v4: uuidv4 } = require("uuid");
 
 // Create and save new user
 exports.create = async (req, res) => {
@@ -30,6 +31,7 @@ exports.create = async (req, res) => {
 
   // Create User
   const user = new User({
+    uuid: uuidv4(),
     username,
     password: hashedPassword,
   });
@@ -100,17 +102,17 @@ exports.update = async (req, res) => {
   let hashedPassword = await bcrypt.hash(password, 8);
 
   User.updateById(
-    req.params.userId,
+    req.params.userUuid,
     new User({ username, password: hashedPassword }),
     (err, data) => {
       if (err) {
         if (err.kind === `not_found`) {
           res.status(404).send({
-            message: `Error updating user with Id ${req.params.userId}`,
+            message: `Error updating user with Id ${req.params.userUuid}`,
           });
         } else {
           res.status(500).send({
-            message: `Error updating User with Id ${req.params.userId}`,
+            message: `Error updating User with Id ${req.params.userUuid}`,
           });
         }
       } else {
@@ -122,15 +124,15 @@ exports.update = async (req, res) => {
 
 // Delete user by Id
 exports.delete = (req, res) => {
-  User.remove(req.params.userId, (err, data) => {
+  User.remove(req.params.userUuid, (err, data) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
-          message: `No found user with Id ${req.params.userId}`,
+          message: `No found user with Id ${req.params.userUuid}`,
         });
       } else {
         res.status(500).send({
-          message: `Could not delete user with Id ${req.params.userId}`,
+          message: `Could not delete user with Id ${req.params.userUuid}`,
         });
       }
     } else {
