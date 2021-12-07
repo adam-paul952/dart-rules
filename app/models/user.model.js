@@ -14,10 +14,10 @@ User.create = (newUser, result) => {
       result(err, null);
       return;
     }
-    console.log(`Created User: `, newUser);
+    console.log(`Created User: `, newUser.username);
     result(null, {
       id: res.insertId,
-      ...newUser,
+      username: newUser.username,
     });
   });
 };

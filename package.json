@@ -13,10 +13,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jest": "^27.4.3",
     "nodemon": "^2.0.13"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon server.js",
     "createDb": "node ./create-database/createDatabase.js && node ./create-database/createDatabaseTables.js"
   },
