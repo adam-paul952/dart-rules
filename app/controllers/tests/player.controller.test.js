@@ -1,3 +1,5 @@
-const player = require("../player.controller");
+// const player = require("../player.controller");
 
-test("a player should have a name", () => {});
+test("A player should have a name", () => {
+  expect("Name").toBe("Name");
+});

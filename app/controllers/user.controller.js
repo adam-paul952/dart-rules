@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
     return;
   }
 
-  const userFound = User.findUserByUsername(username, (err, data) => {
+  const userFound = await User.findUserByUsername(username, (err, data) => {
     if (data) {
       res.status(400).send({ message: `Username is taken` });
       console.log(`Username is taken`);

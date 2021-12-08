@@ -14,10 +14,11 @@
   },
   "devDependencies": {
     "jest": "^27.4.3",
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "supertest": "^6.1.6"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "start": "nodemon server.js",
     "createDb": "node ./create-database/createDatabase.js && node ./create-database/createDatabaseTables.js"
   },

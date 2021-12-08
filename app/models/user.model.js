@@ -46,7 +46,7 @@ User.findUserByUsername = (username, result) => {
         return true;
       }
       if (res.length) {
-        console.log(`Found User: `, res[0]);
+        console.log(`Found User: `, res[0].username);
         result(null, res[0]);
         return;
       }
