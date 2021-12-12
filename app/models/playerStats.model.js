@@ -47,7 +47,7 @@ PlayerStats.findStatsForSinglePlayer = (playerId, result) => {
   sql.query(`SELECT * from stats WHERE player_id = ?`, playerId, (err, res) => {
     if (err) {
       console.log(`error: `, err);
-      result(null, err);
+      result(err, null);
       return;
     }
 
@@ -62,7 +62,7 @@ PlayerStats.updateGamesPlayedAllPlayers = (result) => {
     (err, res) => {
       if (err) {
         console.log(`error: `, err);
-        result(null, err);
+        result(err, null);
         return;
       } else {
         console.log(`updated games played`);
@@ -78,7 +78,7 @@ PlayerStats.updateWinningPlayerStats = (playerId, result) => {
     (err, res) => {
       if (err) {
         console.log(`error: `, err);
-        result(null, err);
+        result(err, null);
         return;
       }
       if (res.affectedRows === 0) {

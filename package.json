@@ -13,14 +13,18 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "env-cmd": "^10.1.0",
     "jest": "^27.4.3",
     "nodemon": "^2.0.13",
     "supertest": "^6.1.6"
   },
   "scripts": {
-    "test": "jest --watch",
-    "start": "nodemon server.js",
+    "test": "env-cmd -f ./config/test.env jest --detectOpenHandles",
+    "start": "env-cmd -f ./config/dev.env nodemon server.js",
     "createDb": "node ./create-database/createDatabase.js && node ./create-database/createDatabaseTables.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
