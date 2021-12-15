@@ -46,6 +46,7 @@ exports.findStatsForOne = (req, res) => {
 };
 
 exports.updateGamesPlayedStat = (req, res) => {
+  const { gamesPlayed, gamesWon, winPercentage } = req.body;
   PlayerStats.updateGamesPlayedAllPlayers((err, data) => {
     if (err) {
       res.status(500).send({

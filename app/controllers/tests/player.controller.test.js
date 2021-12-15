@@ -1,60 +1,143 @@
 const request = require("supertest");
 const app = require("../../../app");
-const sql = require("../../models/db");
+const connection = require("../../models/db");
+const {
+  createUserTable,
+  dropUserTable,
+  testUser,
+} = require("./util/createUser");
+const {
+  createPlayerTable,
+  dropPlayerTable,
+  testPlayer,
+  testPlayer1,
+} = require("./util/createPlayer");
 
-afterAll(() => {
-  sql.end();
-});
+jest.mock("uuid", () => ({ v4: () => "test" }));
 
-// Create Player
-test("Content can not be empty", async () => {
-  await request(app)
-    .post("/players")
-    .send({ playerName: "", users_id: "" })
-    .expect(500);
-});
+describe("player controller", () => {
+  beforeAll(async () => {
+    createUserTable();
+    await request(app).post("/users").send(testUser);
+  });
+  beforeEach(async () => {
+    await createPlayerTable();
+  });
 
-test("Successful player creation", async () => {
-  await request(app)
-    .post("/players")
-    .send({ playerName: "test", users_id: "1" })
-    .expect(200);
-});
+  afterEach(async () => {
+    await dropPlayerTable();
+  });
 
-// Find player by name
-test("Should return no player found", async () => {
-  await request(app).get("/players/byName/test1").expect(404);
-});
+  afterAll(async () => {
+    await dropUserTable();
+    await connection.end();
+  });
 
-test("Should return player found", async () => {
-  await request(app).get("/players/byName/test").expect(200);
-});
+  // // Create Player
+  it("should return content can not be empty", async () => {
+    const response = await request(app)
+      .post("/players")
+      .send({ playerName: "", users_id: "test" })
+      .expect("Content-Type", /json/)
+      .expect(400);
+    expect(response.body.message).toBe(`Content can not be empty!`);
+  });
 
-// Find all players for a user
-test("Should return a list of players by users_id", async () => {
-  await request(app).get("/players/1").expect(200);
-});
+  it("should successfully create player", async () => {
+    const response = await request(app)
+      .post("/players")
+      .set("Accept", "application/json")
+      .send(testPlayer)
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.playerName).toBe("test");
+  });
 
-test("Should return no players found for user", async () => {
-  await request(app).get("/players/18").expect(404);
-});
+  // // Find player by name
+  it("should return no player found", async () => {
+    const response = await request(app)
+      .get("/players/byName/test1")
+      .expect("Content-Type", /json/)
+      .expect(404);
+    expect(response.body.message).toBe(`No test1 found.`);
+  });
 
-test("Should update player based on playerId", async () => {
-  await request(app)
-    .put("/players/2")
-    .send({ playerName: "test24", users_id: "1" })
-    .expect(200);
-});
+  it("should return player found", async () => {
+    await request(app).post("/players").send(testPlayer);
+    const response = await request(app)
+      .get("/players/byName/test")
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.playerName).toBe("test");
+  });
 
-test("Should return player not found", async () => {
-  await request(app).put("/players/1").expect(404);
-});
+  // Find all players for a user
+  const expected = [
+    { id: 1, playerName: "test", users_id: "test" },
+    { id: 2, playerName: "test1", users_id: "test" },
+  ];
+  it("should return a list of players by users_id", async () => {
+    await request(app).post("/players").send(testPlayer);
+    await request(app).post("/players").send(testPlayer1);
+    await request(app)
+      .get("/players/test")
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect.arrayContaining(expected);
+  });
 
-// Delete a player by Id
-test("Should return player not found", async () => {
-  await request(app).delete("/players/1").expect(404);
-});
+  it("should return no players found for user", async () => {
+    const response = await request(app)
+      .get("/players/test")
+      .expect("Content-Type", /json/)
+      .expect(404);
+    expect(response.body.message).toBe(`There were no players found`);
+  });
 
-test("Should return player deleted", async () => {
-  await request(app).delete("/players/8").expect(200);
+  // Update player
+  it("should update player based on playerId", async () => {
+    await request(app).post("/players").send(testPlayer);
+    const response = await request(app)
+      .put("/players/1")
+      .send({ playerName: "test24", users_id: testPlayer.users_id })
+      .expect(200);
+    expect(response.body.playerName).toBe("test24");
+  });
+
+  it("should return player not found for updating", async () => {
+    const response = await request(app)
+      .put("/players/2")
+      .send({ playerName: "test24", users_id: testPlayer.users_id })
+      .expect("Content-Type", /json/)
+      .expect(404);
+    expect(response.body.message).toBe(`No Player found with Id 2`);
+  });
+
+  it("should return content cannot be empty!", async () => {
+    await request(app).post("/players").send(testPlayer);
+    const response = await request(app)
+      .put("/players/1")
+      .send({ playerName: "", users_id: testPlayer.users_id })
+      .expect("Content-Type", /json/)
+      .expect(400);
+    expect(response.body.message).toBe(`Content cannot be empty!`);
+  });
+
+  // // Delete a player by Id
+  it("should return player not found", async () => {
+    const response = await request(app)
+      .delete("/players/1")
+      .expect("Content-Type", /json/)
+      .expect(404);
+    expect(response.body.message).toBe(`No player found with Id 1`);
+  });
+
+  it("should return player deleted", async () => {
+    await request(app).post("/players").send(testPlayer);
+    const response = await request(app)
+      .delete("/players/1")
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.message).toBe(`Player 1 was successfully deleted`);
+  });
 });

@@ -2,14 +2,14 @@ const Player = require("../models/player.model");
 
 // Create and save new player
 exports.create = (req, res) => {
+  const { playerName, users_id } = req.body;
   // Validate request
-  if (!req.body) {
-    res.status(400).send({
+  if (!playerName) {
+    return res.status(400).send({
       message: `Content can not be empty!`,
     });
   }
 
-  const { playerName, users_id } = req.body;
   // Create Player
   const player = new Player({
     playerName,
@@ -66,8 +66,9 @@ exports.findAllByUserId = (req, res) => {
 // Update a player identified by playerId
 exports.update = (req, res) => {
   // Validate request
-  if (!req.body) {
-    res.status(400).send({
+  const { playerName } = req.body;
+  if (!playerName) {
+    return res.status(400).send({
       message: `Content cannot be empty!`,
     });
   }
@@ -75,7 +76,7 @@ exports.update = (req, res) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
-          message: `Error updating Player with Id ${req.params.playerId}`,
+          message: `No Player found with Id ${req.params.playerId}`,
         });
       } else {
         res.status(500).send({
@@ -83,7 +84,7 @@ exports.update = (req, res) => {
         });
       }
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 };
@@ -102,7 +103,7 @@ exports.delete = (req, res) => {
         });
       }
     } else {
-      res.send({
+      res.status(200).send({
         message: `Player ${req.params.playerId} was successfully deleted`,
       });
     }

@@ -43,7 +43,7 @@ User.findUserByUsername = (username, result) => {
       if (err) {
         console.log(`Error: `, err);
         result(err, null);
-        return true;
+        return;
       }
       if (res.length) {
         console.log(`Found User: `, res[0].username);
@@ -70,7 +70,7 @@ User.updateById = (id, user, result) => {
         result({ kind: `not_found` }, null);
         return;
       }
-      console.log(`Updated User: `, { id: id, ...user });
+      console.log(`Updated User: `, { id: id, username: user.username });
       result(null, { id: id, ...user });
     }
   );

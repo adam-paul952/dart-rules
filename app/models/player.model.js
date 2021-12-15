@@ -13,8 +13,11 @@ Player.create = (newPlayer, result) => {
       result(err, null);
       return;
     }
-    console.log(`created player: `, { id: res.insertId, ...newPlayer });
-    result(null, { id: res.insertId, ...newPlayer });
+    console.log(`created player: `, {
+      id: res.insertId,
+      playerName: newPlayer.playerName,
+    });
+    result(null, { id: res.insertId, playerName: newPlayer.playerName });
   });
 };
 
@@ -73,8 +76,11 @@ Player.updateById = (id, player, result) => {
         result({ kind: `not_found` }, null);
         return;
       }
-      console.log(`updated players: `, { id: id, ...player });
-      result(null, { id: id, ...player });
+      console.log(`updated players: `, {
+        id: id,
+        playerName: player.playerName,
+      });
+      result(null, { id: id, playerName: player.playerName });
     }
   );
 };

@@ -1,71 +1,112 @@
 const request = require("supertest");
 const app = require("../../../app");
-const sql = require("../../models/db");
+const connection = require("../../models/db");
+const {
+  createUserTable,
+  dropUserTable,
+  testUser,
+} = require("./util/createUser");
 
-const testUser = { username: "test12@test.com", password: "test12" };
+jest.mock("uuid", () => ({ v4: () => "test" }));
 
-afterAll(() => {
-  sql.end();
-});
+describe("user controller", () => {
+  beforeEach(async () => {
+    await createUserTable();
+  });
 
-// Create User
-test("Should create a user", async () => {
-  await request(app).post("/users").send(testUser).expect(200);
-});
+  afterEach(async () => {
+    await dropUserTable();
+  });
 
-test("Should create error for improper username or password", async () => {
-  await request(app)
-    .post("/users")
-    .send({
-      username: "",
-      password: "",
-    })
-    .expect(400);
-});
+  afterAll(async () => {
+    await connection.end();
+  });
 
-// Foreign key constraint error
-// test("Should find already existing user", async () => {
-//   await request(app)
-//     .post("/users")
-//     .send({ username: "test@test.com", password: "test12" })
-//     .expect(400);
-// });
+  // Create User
+  it("should create a user", async () => {
+    const response = await request(app)
+      .post("/users")
+      .set("Accept", "application/json")
+      .send(testUser)
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.username).toBe("test12@test.com");
+  });
 
-// User log in
+  it("should create error username and password can not be empty", async () => {
+    const response = await request(app)
+      .post("/users")
+      .send({
+        username: "",
+        password: "",
+      })
+      .expect("Content-Type", /json/)
+      .expect(400);
+    expect(response.body.message).toBe("Username / Password can not be empty");
+  });
 
-test("Should return no user found", async () => {
-  await request(app)
-    .post("/users/login")
-    .send({ username: "test11@test.com", password: "test1" })
-    .expect(400);
-});
+  // Foreign key constraint error
+  // test("Should find already existing user", async () => {
+  //   await request(app).post("/users").send(testUser);
+  //   const response = await request(app)
+  //     .post("/users")
+  //     .send({ username: testUser.username, password: "password" })
+  //     .expect("Content-Type", /json/)
+  //     .expect(400);
+  //   expect(response.body.message).toBe("Username is taken");
+  // });
 
-test("Should return incorrect password", async () => {
-  await request(app)
-    .post("/users/login")
-    .send({ username: testUser.username, password: "test" })
-    .expect(409);
-});
+  // User log in
 
-test("Should log a user in", async () => {
-  await request(app).post("/users/login").send(testUser).expect(200);
-});
+  it("should return no user found", async () => {
+    await request(app)
+      .post("/users/login")
+      .send({ username: "test11@test.com", password: "test1" })
+      .expect(400);
+  });
 
-// Update user
-test("Should return content cannot be empty", async () => {
-  await request(app)
-    .put("/users/42")
-    .send({ username: "", password: "" })
-    .expect(404);
-});
+  it("should return incorrect password", async () => {
+    await request(app).post("/users").send(testUser);
+    await request(app)
+      .post("/users/login")
+      .send({ username: testUser.username, password: "test" })
+      .expect(409);
+  });
 
-// Delete user
-test("Should delete a user", async () => {
-  await request(app)
-    .delete("/users/f8d6c4f6-a5a8-4137-8173-4499149654a5")
-    .expect(200);
-});
+  it("should log a user in", async () => {
+    await request(app).post("/users").send(testUser);
+    const response = await request(app)
+      .post("/users/login")
+      .set("Accept", "application/json")
+      .send(testUser)
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.username).toBe("test12@test.com");
+  });
 
-test("Should return user not found", async () => {
-  await request(app).delete("/users/8").expect(404);
+  // Update user
+  it("should return content cannot be empty", async () => {
+    await request(app)
+      .put("/users/42")
+      .send({ username: "", password: "" })
+      .expect(404);
+  });
+
+  it("should edit user", async () => {
+    await request(app).post("/users").send(testUser);
+    await request(app)
+      .put("/users/test")
+      .send({ username: "test@email.com", password: "test" })
+      .expect(200);
+  });
+
+  // Delete user
+  it("should delete a user", async () => {
+    await request(app).post("/users").send(testUser);
+    await request(app).delete("/users/test").expect(200);
+  });
+
+  it("should return user not found", async () => {
+    await request(app).delete("/users/8").expect(404);
+  });
 });
