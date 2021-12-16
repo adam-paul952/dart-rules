@@ -21,7 +21,7 @@ PlayerStats.findAllPlayerStats = (userId, result) => {
         result(err, null);
         return;
       }
-      console.log(`Player Stats: `, res);
+      console.log(`All Player Stats: `, res);
       result(null, res);
     }
   );
@@ -51,14 +51,14 @@ PlayerStats.findStatsForSinglePlayer = (playerId, result) => {
       return;
     }
 
-    console.log(`players: `, res);
+    console.log(`Stats for single player: `, res);
     result(null, res);
   });
 };
 
-PlayerStats.updateGamesPlayedAllPlayers = (result) => {
+PlayerStats.updateGamesPlayedAllPlayers = (playerId, result) => {
   sql.query(
-    `UPDATE stats SET gamesWon = gamesWon, gamesPlayed = gamesPlayed + 1, winPercentage = (gamesWon / gamesPlayed) * 100`,
+    `UPDATE stats SET gamesWon = gamesWon, gamesPlayed = gamesPlayed + 1, winPercentage = (gamesWon / gamesPlayed) * 100 WHERE player_id = ${playerId}`,
     (err, res) => {
       if (err) {
         console.log(`error: `, err);
@@ -74,7 +74,7 @@ PlayerStats.updateGamesPlayedAllPlayers = (result) => {
 
 PlayerStats.updateWinningPlayerStats = (playerId, result) => {
   sql.query(
-    `UPDATE stats SET gamesWon = gamesWon + 1,gamesPlayed = gamesPlayed + 1, winPercentage = (gamesWon / gamesPlayed) * 100 WHERE player_id = ${playerId}`,
+    `UPDATE stats SET gamesWon = gamesWon + 1, gamesPlayed = gamesPlayed, winPercentage = (gamesWon / gamesPlayed) * 100 WHERE player_id = ${playerId}`,
     (err, res) => {
       if (err) {
         console.log(`error: `, err);
@@ -84,7 +84,7 @@ PlayerStats.updateWinningPlayerStats = (playerId, result) => {
       if (res.affectedRows === 0) {
         result({ kind: "not_found" }, null);
       } else {
-        console.log(`updated games won`, res[0]);
+        console.log(`updated games won`);
         result(null, res);
       }
     }

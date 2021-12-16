@@ -47,13 +47,15 @@ exports.findStatsForOne = (req, res) => {
 
 exports.updateGamesPlayedStat = (req, res) => {
   const { gamesPlayed, gamesWon, winPercentage } = req.body;
-  PlayerStats.updateGamesPlayedAllPlayers((err, data) => {
+  PlayerStats.updateGamesPlayedAllPlayers(req.params.playerId, (err, data) => {
     if (err) {
       res.status(500).send({
         message: err.message || `Error occured while updating players`,
       });
     } else {
-      res.status(200).send(data);
+      res.status(200).send({
+        message: `Successfully updated games played for a single player`,
+      });
     }
   });
 };
@@ -71,7 +73,9 @@ exports.updateWinningPlayerStats = (req, res) => {
             message: err.message || `Error occured while updating players`,
           });
       } else {
-        res.status(200).send(data);
+        res.status(200).send({
+          message: `Successfully updated games won for winning player`,
+        });
       }
     });
   }

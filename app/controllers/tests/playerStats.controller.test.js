@@ -40,6 +40,7 @@ describe("player stats controller", () => {
   it("should create a row for stats for created player", async () => {
     const response = await request(app)
       .post("/playerStats/1")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200);
     expect(response.body.message).toBe(
@@ -61,6 +62,7 @@ describe("player stats controller", () => {
     await request(app).post("/playerStats/1");
     await request(app)
       .get("/playerStats/byUser/test")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200);
     expect.arrayContaining(expectedForUser);
@@ -81,6 +83,7 @@ describe("player stats controller", () => {
     await request(app).post("/playerStats/1");
     await request(app)
       .get("/playerStats/byPlayer/1")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200);
     expect.arrayContaining(expectedForPlayer);
@@ -89,12 +92,36 @@ describe("player stats controller", () => {
   // Update games played for all players
   it("should add 1 to all players `Games Played`", async () => {
     await request(app).post("/playerStats/1");
-    await request(app).put("/playerStats/").expect(200);
+    const response = await request(app)
+      .put("/playerStats/1")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.message).toBe(
+      "Successfully updated games played for a single player"
+    );
   });
 
   //Update games won for winning player
   it("should add 1 to games played for winning player", async () => {
     await request(app).post("/playerStats/1");
-    await request(app).put("/playerStats/1").expect(200);
+    const response = await request(app)
+      .put("/playerStats/winner/1")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.message).toBe(
+      "Successfully updated games won for winning player"
+    );
+  });
+
+  it("should return player not found", async () => {
+    await request(app).post("/playerStats/1");
+    const response = await request(app)
+      .put("/playerStats/winner/2")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(404);
+    expect(response.body.message).toBe("No player found with Id 2");
   });
 });

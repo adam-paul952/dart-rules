@@ -6,10 +6,9 @@ exports.create = (req, res) => {
   // Validate request
   if (!playerName) {
     return res.status(400).send({
-      message: `Content can not be empty!`,
+      message: `Content cannot be empty!`,
     });
   }
-
   // Create Player
   const player = new Player({
     playerName,
@@ -22,7 +21,7 @@ exports.create = (req, res) => {
         message: err.message || `Error occured while creating the player`,
       });
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 };
@@ -41,7 +40,7 @@ exports.findOneByName = (req, res) => {
         });
       }
     } else {
-      res.send(data);
+      res.status(200).send(data);
     }
   });
 };
@@ -59,7 +58,9 @@ exports.findAllByUserId = (req, res) => {
           message: err.message || `Error getting players.`,
         });
       }
-    } else res.send(data);
+    } else {
+      res.status(200).send(data);
+    }
   });
 };
 

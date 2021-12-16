@@ -36,13 +36,14 @@ describe("user controller", () => {
   it("should create error username and password can not be empty", async () => {
     const response = await request(app)
       .post("/users")
+      .set("Accept", "application/json")
       .send({
         username: "",
         password: "",
       })
       .expect("Content-Type", /json/)
       .expect(400);
-    expect(response.body.message).toBe("Username / Password can not be empty");
+    expect(response.body.message).toBe("Username / Password cannot be empty");
   });
 
   // Foreign key constraint error
@@ -59,18 +60,22 @@ describe("user controller", () => {
   // User log in
 
   it("should return no user found", async () => {
-    await request(app)
+    const response = await request(app)
       .post("/users/login")
+      .set("Accept", "application/json")
       .send({ username: "test11@test.com", password: "test1" })
       .expect(400);
+    expect(response.body.message).toBe("No user found");
   });
 
   it("should return incorrect password", async () => {
     await request(app).post("/users").send(testUser);
-    await request(app)
+    const response = await request(app)
       .post("/users/login")
+      .set("Accept", "application/json")
       .send({ username: testUser.username, password: "test" })
-      .expect(409);
+      .expect(401);
+    expect(response.body.message).toBe("Incorrect password");
   });
 
   it("should log a user in", async () => {
@@ -86,27 +91,42 @@ describe("user controller", () => {
 
   // Update user
   it("should return content cannot be empty", async () => {
-    await request(app)
+    const response = await request(app)
       .put("/users/42")
+      .set("Accept", "application/json")
       .send({ username: "", password: "" })
+      .expect("Content-Type", /json/)
       .expect(404);
+    expect(response.body.message).toBe("No user found with that Id");
   });
 
   it("should edit user", async () => {
     await request(app).post("/users").send(testUser);
     await request(app)
       .put("/users/test")
+      .set("Accept", "application/json")
       .send({ username: "test@email.com", password: "test" })
+      .expect("Content-Type", /json/)
       .expect(200);
   });
 
   // Delete user
   it("should delete a user", async () => {
     await request(app).post("/users").send(testUser);
-    await request(app).delete("/users/test").expect(200);
+    const response = await request(app)
+      .delete("/users/test")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.message).toBe("User was successfully deleted!");
   });
 
   it("should return user not found", async () => {
-    await request(app).delete("/users/8").expect(404);
+    const response = await request(app)
+      .delete("/users/8")
+      .set("Accept", "application/json")
+      .expect("Content-Type", /json/)
+      .expect(404);
+    expect(response.body.message).toBe("No user found with that Id");
   });
 });

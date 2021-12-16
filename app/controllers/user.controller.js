@@ -9,9 +9,11 @@ exports.create = async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    res.status(400).send({ message: `Username / Password can not be empty` });
+    res.status(400).send({ message: `Username / Password cannot be empty` });
     return;
   }
+
+  //TODO: Why isn't this setting headers prior to foreign key check?
 
   const userFound = await User.findUserByUsername(username, (err, data) => {
     if (data) {
@@ -26,6 +28,8 @@ exports.create = async (req, res) => {
     res.status(400).send({ message: "User already exists" });
     return;
   }
+
+  // End TODO
 
   let hashedPassword = await bcrypt.hash(password, 8);
 
@@ -72,7 +76,7 @@ exports.login = (req, res) => {
       res.status(200).send(data);
     } else {
       console.log(`Incorrect Password`);
-      res.status(409).send({ message: `Incorrect password` });
+      res.status(401).send({ message: `Incorrect password` });
     }
   });
 };
@@ -108,7 +112,7 @@ exports.update = async (req, res) => {
       if (err) {
         if (err.kind === `not_found`) {
           res.status(404).send({
-            message: `Error updating user with Id ${req.params.userUuid}`,
+            message: `No user found with that Id`,
           });
         } else {
           res.status(500).send({
@@ -128,7 +132,7 @@ exports.delete = (req, res) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
-          message: `No found user with Id ${req.params.userUuid}`,
+          message: `No user found with that Id`,
         });
       } else {
         res.status(500).send({

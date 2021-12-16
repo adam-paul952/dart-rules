@@ -12,12 +12,13 @@ Player.create = (newPlayer, result) => {
       console.log(`error: `, err);
       result(err, null);
       return;
+    } else {
+      console.log(`created player: `, {
+        id: res.insertId,
+        playerName: newPlayer.playerName,
+      });
+      result(null, { id: res.insertId, playerName: newPlayer.playerName });
     }
-    console.log(`created player: `, {
-      id: res.insertId,
-      playerName: newPlayer.playerName,
-    });
-    result(null, { id: res.insertId, playerName: newPlayer.playerName });
   });
 };
 
@@ -97,7 +98,7 @@ Player.remove = (id, result) => {
       result({ kind: `not_found` }, null);
       return;
     }
-    console.log(`deleted player with id: `, id);
+    console.log(`deleted player with id: ${id}`);
     result(null, res);
   });
 };

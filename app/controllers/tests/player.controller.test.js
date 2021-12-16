@@ -37,10 +37,11 @@ describe("player controller", () => {
   it("should return content can not be empty", async () => {
     const response = await request(app)
       .post("/players")
+      .set("Accept", "application/json")
       .send({ playerName: "", users_id: "test" })
       .expect("Content-Type", /json/)
       .expect(400);
-    expect(response.body.message).toBe(`Content can not be empty!`);
+    expect(response.body.message).toBe(`Content cannot be empty!`);
   });
 
   it("should successfully create player", async () => {
@@ -57,6 +58,7 @@ describe("player controller", () => {
   it("should return no player found", async () => {
     const response = await request(app)
       .get("/players/byName/test1")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(404);
     expect(response.body.message).toBe(`No test1 found.`);
@@ -66,6 +68,7 @@ describe("player controller", () => {
     await request(app).post("/players").send(testPlayer);
     const response = await request(app)
       .get("/players/byName/test")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200);
     expect(response.body.playerName).toBe("test");
@@ -81,6 +84,7 @@ describe("player controller", () => {
     await request(app).post("/players").send(testPlayer1);
     await request(app)
       .get("/players/test")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200);
     expect.arrayContaining(expected);
@@ -89,6 +93,7 @@ describe("player controller", () => {
   it("should return no players found for user", async () => {
     const response = await request(app)
       .get("/players/test")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(404);
     expect(response.body.message).toBe(`There were no players found`);
@@ -99,6 +104,7 @@ describe("player controller", () => {
     await request(app).post("/players").send(testPlayer);
     const response = await request(app)
       .put("/players/1")
+      .set("Accept", "application/json")
       .send({ playerName: "test24", users_id: testPlayer.users_id })
       .expect(200);
     expect(response.body.playerName).toBe("test24");
@@ -107,6 +113,7 @@ describe("player controller", () => {
   it("should return player not found for updating", async () => {
     const response = await request(app)
       .put("/players/2")
+      .set("Accept", "application/json")
       .send({ playerName: "test24", users_id: testPlayer.users_id })
       .expect("Content-Type", /json/)
       .expect(404);
@@ -117,6 +124,7 @@ describe("player controller", () => {
     await request(app).post("/players").send(testPlayer);
     const response = await request(app)
       .put("/players/1")
+      .set("Accept", "application/json")
       .send({ playerName: "", users_id: testPlayer.users_id })
       .expect("Content-Type", /json/)
       .expect(400);
@@ -127,6 +135,7 @@ describe("player controller", () => {
   it("should return player not found", async () => {
     const response = await request(app)
       .delete("/players/1")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(404);
     expect(response.body.message).toBe(`No player found with Id 1`);
@@ -136,6 +145,7 @@ describe("player controller", () => {
     await request(app).post("/players").send(testPlayer);
     const response = await request(app)
       .delete("/players/1")
+      .set("Accept", "application/json")
       .expect("Content-Type", /json/)
       .expect(200);
     expect(response.body.message).toBe(`Player 1 was successfully deleted`);

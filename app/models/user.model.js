@@ -88,7 +88,7 @@ User.remove = (id, result) => {
       result({ kind: `not_found` }, null);
       return;
     }
-    console.log(`Deleted player with ID: `, id);
+    console.log(`Deleted player with ID: ${id} `);
     result(null, res);
   });
 };
