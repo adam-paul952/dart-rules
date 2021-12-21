@@ -1,9 +1,9 @@
 name: DartBoard Server CI
 
 env: 
-  HOST: localhost
-  PASSWORD: password
-  DATABASE: testdb
+  MYSQL_HOST: localhost
+  MYSQL_PASSWORD: password
+  MYSQL_DATABASE: testdb
   PORT: 3306
   NODE_ENV: test
   
