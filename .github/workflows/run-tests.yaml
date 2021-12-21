@@ -14,7 +14,7 @@ on:
     branches: [main]
     
 jobs:
-  api-tests:
+  test-api-users-players-stats:
     runs-on: ubuntu-latest
     
     steps:
@@ -23,6 +23,7 @@ jobs:
         mysql database: 'testdb'
         mysql root password: 'password'
         mysql version: '8.0'
+    - run: 'sudo /etc/init.d/mysql start'
     - uses: actions/checkout@v2
     - name: Use Node.js
       uses: actions/setup-node@v2
