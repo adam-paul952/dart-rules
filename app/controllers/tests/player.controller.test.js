@@ -33,7 +33,7 @@ describe("player controller", () => {
 
   afterAll(async () => {
     await dropUserTable();
-    await dropDatabase();
+    // await dropDatabase();
     await connection.end();
   });
 
