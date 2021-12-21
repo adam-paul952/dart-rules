@@ -1,12 +1,12 @@
 const connection = require("../../../models/db");
 
-const createDatabase = async () => {
-  await connection.query(`CREATE DATABASE IF NOT EXISTS testdb;`);
+const createDatabase = () => {
+  connection.query(`CREATE DATABASE IF NOT EXISTS testdb;`);
   console.log(`Database created`);
 };
 
-const dropDatabase = async () => {
-  await connection.query(`DROP DATABASE IF EXISTS testdb;`);
+const dropDatabase = () => {
+  connection.query(`DROP DATABASE IF EXISTS testdb;`);
   console.log(`Database dropped`);
 };
 
