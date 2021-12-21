@@ -1,9 +1,9 @@
 name: DartBoard Server CI
 
 env: 
-  MYSQL_HOST: localhost
-  MYSQL_PASSWORD: password
-  MYSQL_DATABASE: testdb
+  DB_HOST: localhost
+  DB_PASSWORD: password
+  DB: testdb
   PORT: 3306
   NODE_ENV: test
   
@@ -23,7 +23,6 @@ jobs:
         mysql database: 'testdb'
         mysql root password: 'password'
         mysql version: '8.0'
-    - run: 'sudo /etc/init.d/mysql start'
     - uses: actions/checkout@v2
     - name: Use Node.js
       uses: actions/setup-node@v2
@@ -34,5 +33,5 @@ jobs:
     - name: Run tests
       run: npm run clTest
       env:
-        USER: root
+        DB_USER: root
         PORT: ${{ env.PORT }}
