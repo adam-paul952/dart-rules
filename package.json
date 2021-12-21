@@ -22,7 +22,7 @@
     "test": "env-cmd -f ./config/test.env jest --detectOpenHandles",
     "start": "env-cmd -f ./config/dev.env nodemon server.js",
     "createDb": "env-cmd -f ./config/dev.env node ./create-database/createDatabase.js && env-cmd -f ./config/dev.env node ./create-database/createDatabaseTables.js",
-    "clTest": "jest"
+    "clTest": "jest ."
   },
   "jest": {
     "testEnvironment": "node"
