@@ -109,6 +109,7 @@ describe("player stats controller", () => {
   //Update games won for winning player
   it("should add 1 to games played for winning player", async () => {
     await request(app).post("/playerStats/1");
+    await request(app).put("/playerStats/1");
     const response = await request(app)
       .put("/playerStats/winner/1")
       .set("Accept", "application/json")
