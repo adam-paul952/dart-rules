@@ -5,6 +5,8 @@ const {
   createUserTable,
   dropUserTable,
   testUser,
+  createDatabase,
+  dropDatabase,
 } = require("./util/createUser");
 const {
   createPlayerTable,
@@ -17,7 +19,8 @@ jest.mock("uuid", () => ({ v4: () => "test" }));
 
 describe("player controller", () => {
   beforeAll(async () => {
-    createUserTable();
+    await createDatabase();
+    await createUserTable();
     await request(app).post("/users").send(testUser);
   });
   beforeEach(async () => {
@@ -30,6 +33,7 @@ describe("player controller", () => {
 
   afterAll(async () => {
     await dropUserTable();
+    await dropDatabase();
     await connection.end();
   });
 

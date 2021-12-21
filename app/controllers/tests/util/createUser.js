@@ -1,5 +1,15 @@
 const connection = require("../../../models/db");
 
+const createDatabase = () => {
+  connection.query(`CREATE DATABASE IF NOT EXISTS testdb;`);
+  console.log(`Database created`);
+};
+
+const dropDatabase = () => {
+  connection.query(`DROP DATABASE IF EXISTS testdb;`);
+  console.log(`Database dropped`);
+};
+
 const createUserTable = () => {
   const sqlUser = `CREATE TABLE IF NOT EXISTS users 
       (id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -24,4 +34,6 @@ module.exports = {
   createUserTable: createUserTable,
   dropUserTable: dropUserTable,
   testUser: testUser,
+  createDatabase: createDatabase,
+  dropDatabase: dropDatabase,
 };
