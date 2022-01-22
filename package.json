@@ -13,14 +13,15 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "env-cmd": "^10.1.0",
     "jest": "^27.4.3",
     "nodemon": "^2.0.13",
     "supertest": "^6.1.6"
   },
   "scripts": {
-    "test": "env-cmd -f ./config/test.env jest --detectOpenHandles",
-    "start": "env-cmd -f ./config/dev.env nodemon server.js",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
+    "start": "nodemon server.js",
     "createDb": "env-cmd -f ./config/dev.env node ./create-database/createDatabase.js && env-cmd -f ./config/dev.env node ./create-database/createDatabaseTables.js",
     "clTest": "jest"
   },
