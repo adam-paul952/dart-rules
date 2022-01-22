@@ -13,41 +13,29 @@ exports.create = async (req, res) => {
     return;
   }
 
-  //TODO: Why isn't this setting headers prior to foreign key check?
+  User.findUserByUsername(username, async (err, data) => {
+    if (!data) {
+      let hashedPassword = await bcrypt.hash(password, 8);
 
-  const userFound = await User.findUserByUsername(username, (err, data) => {
-    if (data) {
-      res.status(400).send({ message: `Username is taken` });
-      console.log(`Username is taken`);
-      return data;
-    }
-    return null;
-  });
+      // Create User
+      const user = new User({
+        uuid: uuidv4(),
+        username,
+        password: hashedPassword,
+      });
 
-  if (userFound) {
-    res.status(400).send({ message: "User already exists" });
-    return;
-  }
-
-  // End TODO
-
-  let hashedPassword = await bcrypt.hash(password, 8);
-
-  // Create User
-  const user = new User({
-    uuid: uuidv4(),
-    username,
-    password: hashedPassword,
-  });
-
-  // Save User in database
-  User.create(user, (err, data) => {
-    if (err) {
-      res.status(500).send({
-        message: err.message || `Error occured while creating User`,
+      // Save User in database
+      User.create(user, (err, data) => {
+        if (err) {
+          res.status(500).send({
+            message: err.message || `Error occured while creating User`,
+          });
+        } else {
+          res.status(200).send(data);
+        }
       });
     } else {
-      res.status(200).send(data);
+      return res.status(400).send({ message: `Username already exists` });
     }
   });
 };

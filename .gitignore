@@ -5,3 +5,5 @@ dev.env
 test.env
 
 .prettierignore
+
+/coverage
