@@ -3,7 +3,7 @@ name: DartBoard Server CI
 env: 
   DB_HOST: localhost
   DB_PASSWORD: password
-  DB: testdb
+  DB_TEST: testdb
   PORT: 3306
   NODE_ENV: test
   
