@@ -36,7 +36,7 @@ describe("player stats controller", () => {
   afterAll(async () => {
     await dropPlayerTable();
     await dropUserTable();
-    await dropDatabase();
+    // await dropDatabase();
     await connection.end();
   });
 

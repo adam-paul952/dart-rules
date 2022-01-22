@@ -25,7 +25,7 @@ describe("user controller", () => {
   });
 
   afterAll(async () => {
-    await dropDatabase();
+    // await dropDatabase();
     await connection.end();
   });
 
