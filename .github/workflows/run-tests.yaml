@@ -31,7 +31,7 @@ jobs:
         cache: "npm"
     - run: npm ci
     - name: Run tests
-      run: npm run test
+      run: npm run clTest
       env:
         DB_USER: root
         PORT: ${{ env.PORT }}
