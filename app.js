@@ -1,19 +1,29 @@
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors");
+const session = require("express-session");
+const passport = require("passport");
+const JsonStore = require("express-session-json")(session);
 
 const app = express();
 
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
-
-app.use(cors());
-
 app.use(morgan("dev"));
+app.use(
+  session({
+    secret: "secretcode",
+    resave: true,
+    saveUninitialized: true,
+    store: new JsonStore(),
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+require("./app/passportConfig")(passport);
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Adam's application" });
+  res.json({ message: "Welcome to the back-end for Dart-Scoreboard!" });
 });
 
 require("./app/routes/player.routes")(app);

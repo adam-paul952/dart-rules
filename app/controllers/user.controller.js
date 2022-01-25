@@ -2,6 +2,7 @@ const User = require("../models/user.model");
 
 const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
+const passport = require("passport");
 
 // Create and save new user
 exports.create = async (req, res) => {
@@ -42,31 +43,29 @@ exports.create = async (req, res) => {
 
 // Log in user
 exports.login = (req, res) => {
-  const { username, password } = req.body;
-  User.findUserByUsername(username, async (err, data) => {
+  passport.authenticate("local", (err, user) => {
     if (err) {
       if (err.kind === "not_found") {
         console.log(`User not found`);
         res.status(400).send({
           message: `No user found`,
         });
-        return;
+      } else if (err.kind === `incorrect_password`) {
+        console.log(`Incorrect password`);
+        res.status(401).send({
+          message: `Incorrect password`,
+        });
       } else {
         res.status(500).send({
           message: err.message || `Error occured while retrieving user`,
         });
       }
-    }
-    const hashedPassword = data.password;
-    const passwordCompared = await bcrypt.compare(password, hashedPassword);
-    if (passwordCompared) {
-      console.log(`Successful login!`);
-      res.status(200).send(data);
     } else {
-      console.log(`Incorrect Password`);
-      res.status(401).send({ message: `Incorrect password` });
+      req.logIn(user, () => {
+        return res.status(200).send(user);
+      });
     }
-  });
+  })(req, res);
 };
 
 // Find all users in the database

@@ -2,7 +2,11 @@ const Player = require("../models/player.model");
 
 // Create and save new player
 exports.create = (req, res) => {
-  const { playerName, users_id } = req.body;
+  const { playerName } = req.body;
+  const users_id = JSON.stringify(req.session.passport.user.uuid);
+  console.log(req.session);
+  console.log(typeof playerName);
+  console.log(typeof users_id);
   // Validate request
   if (!playerName) {
     return res.status(400).send({

@@ -76,6 +76,7 @@ describe("user controller", () => {
   });
 
   it("should return incorrect password", async () => {
+    console.log(`This is the failing test`);
     await request(app).post("/users").send(testUser);
     const response = await request(app)
       .post("/users/login")
