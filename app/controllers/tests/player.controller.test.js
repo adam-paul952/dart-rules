@@ -18,10 +18,13 @@ const {
 jest.mock("uuid", () => ({ v4: () => "test" }));
 
 describe("player controller", () => {
+  let session;
   beforeAll(async () => {
     await createDatabase();
     await createUserTable();
     await request(app).post("/users").send(testUser);
+    const response = await request(app).post("/users/login").send(testUser);
+    session = response.headers["set-cookie"];
   });
   beforeEach(async () => {
     await createPlayerTable();
@@ -33,7 +36,6 @@ describe("player controller", () => {
 
   afterAll(async () => {
     await dropUserTable();
-    // await dropDatabase();
     await connection.end();
   });
 
@@ -42,6 +44,7 @@ describe("player controller", () => {
     const response = await request(app)
       .post("/players")
       .set("Accept", "application/json")
+      .set("Cookie", session)
       .send({ playerName: "", users_id: "test" })
       .expect("Content-Type", /json/)
       .expect(400);
@@ -52,6 +55,7 @@ describe("player controller", () => {
     const response = await request(app)
       .post("/players")
       .set("Accept", "application/json")
+      .set("Cookie", session)
       .send(testPlayer)
       .expect("Content-Type", /json/)
       .expect(200);
@@ -69,7 +73,7 @@ describe("player controller", () => {
   });
 
   it("should return player found", async () => {
-    await request(app).post("/players").send(testPlayer);
+    await request(app).post("/players").send(testPlayer).set("Cookie", session);
     const response = await request(app)
       .get("/players/byName/test")
       .set("Accept", "application/json")
@@ -84,8 +88,11 @@ describe("player controller", () => {
     { id: 2, playerName: "test1", users_id: "test" },
   ];
   it("should return a list of players by users_id", async () => {
-    await request(app).post("/players").send(testPlayer);
-    await request(app).post("/players").send(testPlayer1);
+    await request(app).post("/players").send(testPlayer).set("Cookie", session);
+    await request(app)
+      .post("/players")
+      .send(testPlayer1)
+      .set("Cookie", session);
     await request(app)
       .get("/players/test")
       .set("Accept", "application/json")
@@ -105,7 +112,7 @@ describe("player controller", () => {
 
   // Update player
   it("should update player based on playerId", async () => {
-    await request(app).post("/players").send(testPlayer);
+    await request(app).post("/players").send(testPlayer).set("Cookie", session);
     const response = await request(app)
       .put("/players/1")
       .set("Accept", "application/json")
@@ -125,7 +132,7 @@ describe("player controller", () => {
   });
 
   it("should return content cannot be empty!", async () => {
-    await request(app).post("/players").send(testPlayer);
+    await request(app).post("/players").send(testPlayer).set("Cookie", session);
     const response = await request(app)
       .put("/players/1")
       .set("Accept", "application/json")
@@ -146,7 +153,7 @@ describe("player controller", () => {
   });
 
   it("should return player deleted", async () => {
-    await request(app).post("/players").send(testPlayer);
+    await request(app).post("/players").send(testPlayer).set("Cookie", session);
     const response = await request(app)
       .delete("/players/1")
       .set("Accept", "application/json")

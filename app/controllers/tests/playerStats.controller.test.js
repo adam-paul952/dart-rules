@@ -7,7 +7,6 @@ const {
   dropUserTable,
   testUser,
   createDatabase,
-  dropDatabase,
 } = require("./util/createUser");
 const {
   createPlayerTable,
@@ -18,12 +17,18 @@ const {
 jest.mock("uuid", () => ({ v4: () => "test" }));
 
 describe("player stats controller", () => {
+  let session;
   beforeAll(async () => {
     await createDatabase();
     await createUserTable();
     await createPlayerTable();
     await request(app).post("/users").send(testUser);
-    await request(app).post("/players").send(testPlayer);
+    const response = await request(app)
+      .post("/users/login")
+      .send(testUser)
+      .expect(200);
+    session = response.headers["set-cookie"];
+    await request(app).post("/players").send(testPlayer).set("Cookie", session);
   });
   beforeEach(async () => {
     createStatTable();
@@ -36,7 +41,6 @@ describe("player stats controller", () => {
   afterAll(async () => {
     await dropPlayerTable();
     await dropUserTable();
-    // await dropDatabase();
     await connection.end();
   });
 

@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 const session = require("express-session");
 const passport = require("passport");
-const JsonStore = require("express-session-json")(session);
 
 const app = express();
 
@@ -14,7 +13,6 @@ app.use(
     secret: "secretcode",
     resave: true,
     saveUninitialized: true,
-    store: new JsonStore(),
   })
 );
 app.use(passport.initialize());

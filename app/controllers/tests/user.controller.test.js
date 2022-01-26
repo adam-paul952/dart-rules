@@ -6,7 +6,6 @@ const {
   dropUserTable,
   testUser,
   createDatabase,
-  dropDatabase,
 } = require("./util/createUser");
 
 jest.mock("uuid", () => ({ v4: () => "test" }));
@@ -25,7 +24,6 @@ describe("user controller", () => {
   });
 
   afterAll(async () => {
-    // await dropDatabase();
     await connection.end();
   });
 
@@ -54,15 +52,15 @@ describe("user controller", () => {
   });
 
   // Foreign key constraint error
-  // test("Should find already existing user", async () => {
-  //   await request(app).post("/users").send(testUser);
-  //   const response = await request(app)
-  //     .post("/users")
-  //     .send({ username: testUser.username, password: "password" })
-  //     .expect("Content-Type", /json/)
-  //     .expect(400);
-  //   expect(response.body.message).toBe("Username is taken");
-  // });
+  test("Should find already existing user", async () => {
+    await request(app).post("/users").send(testUser);
+    const response = await request(app)
+      .post("/users")
+      .send({ username: testUser.username, password: "password" })
+      .expect("Content-Type", /json/)
+      .expect(400);
+    expect(response.body.message).toBe("Username already exists");
+  });
 
   // User log in
 
@@ -76,7 +74,6 @@ describe("user controller", () => {
   });
 
   it("should return incorrect password", async () => {
-    console.log(`This is the failing test`);
     await request(app).post("/users").send(testUser);
     const response = await request(app)
       .post("/users/login")
