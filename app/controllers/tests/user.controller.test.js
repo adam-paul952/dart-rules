@@ -96,9 +96,12 @@ describe("user controller", () => {
 
   // Update user
   it("should return content cannot be empty", async () => {
+    await request(app).post("/users").send(testUser);
+    const session = await request(app).post("/users/login").send(testUser);
     const response = await request(app)
       .put("/users/42")
       .set("Accept", "application/json")
+      .set("Cookie", session.headers["set-cookie"])
       .send({ username: "", password: "" })
       .expect("Content-Type", /json/)
       .expect(404);
@@ -107,9 +110,11 @@ describe("user controller", () => {
 
   it("should edit user", async () => {
     await request(app).post("/users").send(testUser);
+    const session = await request(app).post("/users/login").send(testUser);
     await request(app)
       .put("/users/test")
       .set("Accept", "application/json")
+      .set("Cookie", session.headers["set-cookie"])
       .send({ username: "test@email.com", password: "test" })
       .expect("Content-Type", /json/)
       .expect(200);
@@ -118,18 +123,23 @@ describe("user controller", () => {
   // Delete user
   it("should delete a user", async () => {
     await request(app).post("/users").send(testUser);
+    const session = await request(app).post("/users/login").send(testUser);
     const response = await request(app)
       .delete("/users/test")
       .set("Accept", "application/json")
+      .set("Cookie", session.headers["set-cookie"])
       .expect("Content-Type", /json/)
       .expect(200);
     expect(response.body.message).toBe("User was successfully deleted!");
   });
 
   it("should return user not found", async () => {
+    await request(app).post("/users").send(testUser);
+    const session = await request(app).post("/users/login").send(testUser);
     const response = await request(app)
       .delete("/users/8")
       .set("Accept", "application/json")
+      .set("Cookie", session.headers["set-cookie"])
       .expect("Content-Type", /json/)
       .expect(404);
     expect(response.body.message).toBe("No user found with that Id");

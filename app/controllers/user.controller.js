@@ -62,7 +62,9 @@ exports.login = (req, res) => {
       }
     } else {
       req.logIn(user, () => {
-        return res.status(200).send(user);
+        return res
+          .status(200)
+          .send({ uuid: user.uuid, username: user.username });
       });
     }
   })(req, res);
@@ -91,26 +93,27 @@ exports.update = async (req, res) => {
   const { username, password } = req.body;
 
   let hashedPassword = await bcrypt.hash(password, 8);
+  const newUser = new User({ username, password: hashedPassword });
 
-  User.updateById(
-    req.params.userUuid,
-    new User({ username, password: hashedPassword }),
-    (err, data) => {
-      if (err) {
-        if (err.kind === `not_found`) {
-          res.status(404).send({
-            message: `No user found with that Id`,
-          });
-        } else {
-          res.status(500).send({
-            message: `Error updating User with Id ${req.params.userUuid}`,
-          });
-        }
+  User.updateById(req.params.userUuid, newUser, (err, data) => {
+    if (err) {
+      if (err.kind === `not_found`) {
+        res.status(404).send({
+          message: `No user found with that Id`,
+        });
       } else {
-        res.status(200).send(data);
+        res.status(500).send({
+          message: `Error updating User with Id ${req.params.userUuid}`,
+        });
       }
+    } else {
+      passport.authenticate("local", () => {
+        return res
+          .status(200)
+          .send({ uuid: newUser.uuid, username: newUser.username });
+      })(req, res);
     }
-  );
+  });
 };
 
 // Delete user by Id
@@ -130,6 +133,12 @@ exports.delete = (req, res) => {
       res.status(200).send({ message: `User was successfully deleted!` });
     }
   });
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy();
+  req.logOut();
+  res.status(200).send({ message: `Successful logout` });
 };
 
 exports.ping = (req, res) => {

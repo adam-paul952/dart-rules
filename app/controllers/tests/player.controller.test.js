@@ -6,7 +6,6 @@ const {
   dropUserTable,
   testUser,
   createDatabase,
-  dropDatabase,
 } = require("./util/createUser");
 const {
   createPlayerTable,

@@ -23,10 +23,7 @@ describe("player stats controller", () => {
     await createUserTable();
     await createPlayerTable();
     await request(app).post("/users").send(testUser);
-    const response = await request(app)
-      .post("/users/login")
-      .send(testUser)
-      .expect(200);
+    const response = await request(app).post("/users/login").send(testUser);
     session = response.headers["set-cookie"];
     await request(app).post("/players").send(testPlayer).set("Cookie", session);
   });

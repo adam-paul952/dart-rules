@@ -1,3 +1,5 @@
+const checkAuth = require("../auth/checkAuth");
+
 module.exports = (app) => {
   const users = require("../controllers/user.controller");
   // Send ping request to server
@@ -10,8 +12,11 @@ module.exports = (app) => {
   app.post("/users/login", users.login);
 
   // Update user
-  app.put("/users/:userUuid", users.update);
+  app.put("/users/:userUuid", checkAuth, users.update);
 
   // Delete User
-  app.delete("/users/:userUuid", users.delete);
+  app.delete("/users/:userUuid", checkAuth, users.delete);
+
+  // Logout and end session
+  app.post("/logout", users.logout);
 };
