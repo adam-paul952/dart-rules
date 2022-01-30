@@ -9,7 +9,7 @@ const PlayerStats = function (playerStats) {
 // Find all player Stats
 PlayerStats.findAllPlayerStats = (userId, result) => {
   sql.query(
-    `SELECT playerName, gamesPlayed, gamesWon, winPercentage
+    `SELECT player_id, playerName, gamesPlayed, gamesWon, winPercentage
     FROM stats
     INNER JOIN players ON stats.player_id = players.id
     INNER JOIN users ON players.users_id = users.uuid

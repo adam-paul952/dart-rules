@@ -95,29 +95,30 @@ describe("user controller", () => {
   });
 
   // Update user
+  it("should edit user", async () => {
+    await request(app).post("/users").send(testUser);
+    const session = await request(app).post("/users/login").send(testUser);
+    const response = await request(app)
+      .put("/users/edit")
+      .set("Accept", "application/json")
+      .set("Cookie", session.headers["set-cookie"])
+      .send({ username: testUser.username, password: "test" })
+      .expect("Content-Type", /json/)
+      .expect(200);
+    expect(response.body.username).toBe(testUser.username);
+  });
+
   it("should return content cannot be empty", async () => {
     await request(app).post("/users").send(testUser);
     const session = await request(app).post("/users/login").send(testUser);
     const response = await request(app)
-      .put("/users/42")
+      .put("/users/edit")
       .set("Accept", "application/json")
       .set("Cookie", session.headers["set-cookie"])
-      .send({ username: "", password: "" })
+      .send({ username: testUser.username, password: "" })
       .expect("Content-Type", /json/)
-      .expect(404);
-    expect(response.body.message).toBe("No user found with that Id");
-  });
-
-  it("should edit user", async () => {
-    await request(app).post("/users").send(testUser);
-    const session = await request(app).post("/users/login").send(testUser);
-    await request(app)
-      .put("/users/test")
-      .set("Accept", "application/json")
-      .set("Cookie", session.headers["set-cookie"])
-      .send({ username: "test@email.com", password: "test" })
-      .expect("Content-Type", /json/)
-      .expect(200);
+      .expect(400);
+    expect(response.body.message).toBe("Content cannot be empty");
   });
 
   // Delete user
@@ -125,7 +126,7 @@ describe("user controller", () => {
     await request(app).post("/users").send(testUser);
     const session = await request(app).post("/users/login").send(testUser);
     const response = await request(app)
-      .delete("/users/test")
+      .delete("/users/delete")
       .set("Accept", "application/json")
       .set("Cookie", session.headers["set-cookie"])
       .expect("Content-Type", /json/)
@@ -133,15 +134,15 @@ describe("user controller", () => {
     expect(response.body.message).toBe("User was successfully deleted!");
   });
 
-  it("should return user not found", async () => {
-    await request(app).post("/users").send(testUser);
-    const session = await request(app).post("/users/login").send(testUser);
-    const response = await request(app)
-      .delete("/users/8")
-      .set("Accept", "application/json")
-      .set("Cookie", session.headers["set-cookie"])
-      .expect("Content-Type", /json/)
-      .expect(404);
-    expect(response.body.message).toBe("No user found with that Id");
-  });
+  // it("should return user not found", async () => {
+  //   await request(app).post("/users").send(testUser);
+  //   const session = await request(app).post("/users/login").send(testUser);
+  //   const response = await request(app)
+  //     .delete("/users/delete")
+  //     .set("Accept", "application/json")
+  //     .set("Cookie", session.headers["set-cookie"])
+  //     .expect("Content-Type", /json/)
+  //     .expect(404);
+  //   expect(response.body.message).toBe("No user found with that Id");
+  // });
 });

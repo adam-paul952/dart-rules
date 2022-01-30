@@ -85,17 +85,18 @@ exports.findAll = (req, res) => {
 
 // Update a user by Id
 exports.update = async (req, res) => {
-  if (!req.body) {
-    res.status(400).send({
+  const { username, password } = req.body;
+
+  if (!password) {
+    return res.status(400).send({
       message: `Content cannot be empty`,
     });
   }
-  const { username, password } = req.body;
 
   let hashedPassword = await bcrypt.hash(password, 8);
   const newUser = new User({ username, password: hashedPassword });
 
-  User.updateById(req.params.userUuid, newUser, (err, data) => {
+  User.updateById(req.session.passport.user.uuid, newUser, (err, data) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
@@ -103,7 +104,7 @@ exports.update = async (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: `Error updating User with Id ${req.params.userUuid}`,
+          message: `Error updating User ${req.session.passport.user.uuid}`,
         });
       }
     } else {
@@ -118,7 +119,7 @@ exports.update = async (req, res) => {
 
 // Delete user by Id
 exports.delete = (req, res) => {
-  User.remove(req.params.userUuid, (err, data) => {
+  User.remove(req.session.passport.user.uuid, (err, data) => {
     if (err) {
       if (err.kind === `not_found`) {
         res.status(404).send({
@@ -126,10 +127,12 @@ exports.delete = (req, res) => {
         });
       } else {
         res.status(500).send({
-          message: `Could not delete user with Id ${req.params.userUuid}`,
+          message: `Could not delete user with Id ${req.session.passport.user.uuid}`,
         });
       }
     } else {
+      req.session.destroy();
+      req.logOut();
       res.status(200).send({ message: `User was successfully deleted!` });
     }
   });

@@ -1,3 +1,5 @@
+const checkAuth = require("../auth/checkAuth");
+
 module.exports = (app) => {
   const players = require("../controllers/player.controller");
   // Create new player
@@ -7,7 +9,7 @@ module.exports = (app) => {
   app.get("/players/byName/:playerName", players.findOneByName);
 
   // Find all players for a user
-  app.get("/players/:userId", players.findAllByUserId);
+  app.get("/players/byuser", checkAuth, players.findAllByUserId);
 
   // Update a player by Id
   app.put("/players/:playerId", players.update);

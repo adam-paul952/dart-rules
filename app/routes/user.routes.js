@@ -12,10 +12,10 @@ module.exports = (app) => {
   app.post("/users/login", users.login);
 
   // Update user
-  app.put("/users/:userUuid", checkAuth, users.update);
+  app.put("/users/edit", checkAuth, users.update);
 
   // Delete User
-  app.delete("/users/:userUuid", checkAuth, users.delete);
+  app.delete("/users/delete", checkAuth, users.delete);
 
   // Logout and end session
   app.post("/logout", users.logout);

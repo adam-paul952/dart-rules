@@ -5,7 +5,7 @@ module.exports = (app) => {
   app.get("/playerStats/byPlayer/:playerId", playerStats.findStatsForOne);
 
   // Get All Player Stats Based on user id
-  app.get("/playerStats/byUser/:userId", playerStats.findAllStats);
+  app.get("/playerStats/byUser/", playerStats.findAllStats);
 
   // Create new stats for new player
   app.post("/playerStats/:playerId", playerStats.create);

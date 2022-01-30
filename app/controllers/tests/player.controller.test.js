@@ -93,8 +93,9 @@ describe("player controller", () => {
       .send(testPlayer1)
       .set("Cookie", session);
     await request(app)
-      .get("/players/test")
+      .get("/players/byuser")
       .set("Accept", "application/json")
+      .set("Cookie", session)
       .expect("Content-Type", /json/)
       .expect(200);
     expect.arrayContaining(expected);
@@ -102,8 +103,9 @@ describe("player controller", () => {
 
   it("should return no players found for user", async () => {
     const response = await request(app)
-      .get("/players/test")
+      .get("/players/byuser")
       .set("Accept", "application/json")
+      .set("Cookie", session)
       .expect("Content-Type", /json/)
       .expect(404);
     expect(response.body.message).toBe(`There were no players found`);

@@ -48,7 +48,8 @@ exports.findOneByName = (req, res) => {
 
 // Find all players for a single user
 exports.findAllByUserId = (req, res) => {
-  Player.getByUserId(req.params.userId, (err, data) => {
+  console.log(req.session);
+  Player.getByUserId(req.session.passport.user.uuid, (err, data) => {
     if (err) {
       if (err.kind === `no_players_found`) {
         res.status(404).send({

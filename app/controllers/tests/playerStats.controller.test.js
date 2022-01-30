@@ -66,8 +66,9 @@ describe("player stats controller", () => {
   it("should return array of players based on user id", async () => {
     await request(app).post("/playerStats/1");
     await request(app)
-      .get("/playerStats/byUser/test")
+      .get("/playerStats/byUser/")
       .set("Accept", "application/json")
+      .set("Cookie", session)
       .expect("Content-Type", /json/)
       .expect(200);
     expect.arrayContaining(expectedForUser);

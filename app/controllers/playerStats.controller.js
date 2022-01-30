@@ -2,15 +2,18 @@ const PlayerStats = require("../models/playerStats.model");
 
 // Find all Player stats in database
 exports.findAllStats = (req, res) => {
-  PlayerStats.findAllPlayerStats(req.params.userId, (err, data) => {
-    if (err) {
-      res.status(500).send({
-        message: err.message || `Error occured while fetching player stats`,
-      });
-    } else {
-      res.status(200).send(data);
+  PlayerStats.findAllPlayerStats(
+    req.session.passport.user.uuid,
+    (err, data) => {
+      if (err) {
+        res.status(500).send({
+          message: err.message || `Error occured while fetching player stats`,
+        });
+      } else {
+        res.status(200).send(data);
+      }
     }
-  });
+  );
 };
 
 exports.create = (req, res) => {
