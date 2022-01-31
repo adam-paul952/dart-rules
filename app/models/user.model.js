@@ -67,7 +67,6 @@ User.updateById = (id, user, result) => {
         return;
       }
       if (res.affectedRows === 0) {
-        console.log(res.affectedRows);
         result({ kind: `not_found` }, null);
         return;
       }
