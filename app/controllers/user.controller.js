@@ -139,9 +139,13 @@ exports.delete = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.session.destroy();
   req.logOut();
-  res.status(200).send({ message: `Successful logout` });
+  res.status(200).clearCookie("connect.sid", {
+    path: "/",
+  });
+  req.session.destroy(function (err) {
+    res.redirect("/");
+  });
 };
 
 exports.ping = (req, res) => {

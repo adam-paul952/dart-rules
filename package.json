@@ -24,7 +24,8 @@
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
-    "start": "nodemon server.js",
+    "start": "cross-env NODE_ENV=dev nodemon server.js",
+    "build": "cross-env NODE_ENV=build node server.js",
     "createDb": "env-cmd -f ./config/dev.env node ./create-database/createDatabase.js && env-cmd -f ./config/dev.env node ./create-database/createDatabaseTables.js",
     "clTest": "jest"
   },
