@@ -1,8 +1,8 @@
 name: DartBoard Server CI
 
 env: 
-  DB_HOST: localhost
-  DB_PASSWORD: password
+  DB_HOST_DEV: localhost
+  DB_PASSWORD_DEV: password
   DB_TEST: testdb
   PORT: 3306
   NODE_ENV: test
@@ -33,5 +33,5 @@ jobs:
     - name: Run tests
       run: npm run test
       env:
-        DB_USER: root
+        DB_USER_DEV: root
         PORT: ${{ env.PORT }}
