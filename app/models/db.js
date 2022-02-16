@@ -12,6 +12,7 @@ const connection = mysql.createConnection({
   host: databaseHost,
   user: databaseUser,
   password: databasePassword,
+  port: 3306,
   database: databaseName,
 });
 
