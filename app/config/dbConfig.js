@@ -17,6 +17,7 @@ if (process.env.NODE_ENV === "test") {
   databaseUser = process.env.RDS_USERNAME;
   databasePassword = process.env.RDS_PASSWORD;
   databaseName = process.env.RDS_DB_NAME;
+  connectionPort = 8080;
 } else {
   databaseHost = process.env.DB_HOST_DEV;
   databaseUser = process.env.DB_USER_DEV;
